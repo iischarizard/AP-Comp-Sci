@@ -1,5 +1,6 @@
-/** The GUI class handles all user interface and user input
+/**The GUI class handles all user interface and user input
  * 
+ * @author Zachary Norman
  */
 
 import java.util.Scanner;

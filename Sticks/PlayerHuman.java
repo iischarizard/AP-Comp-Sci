@@ -1,3 +1,7 @@
+/** The human player class
+ * 
+ * @author Zachary Norman
+ */
 public class PlayerHuman extends Player{
 
 	public PlayerHuman(String name){

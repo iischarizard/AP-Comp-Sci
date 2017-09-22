@@ -1,4 +1,7 @@
-
+/**The game class that runs the game logic
+ * 
+ * @author Zachary Norman
+ */
 public class Game {
 
 

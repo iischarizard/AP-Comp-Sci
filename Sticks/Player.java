@@ -1,3 +1,7 @@
+/**The player parent class
+ * 
+ * @author Zachary Norman
+ */
 public abstract class Player {
 
 

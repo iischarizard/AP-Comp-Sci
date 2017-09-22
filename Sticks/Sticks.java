@@ -1,4 +1,7 @@
-
+/**The class that creates the GUI and Game, and runs the game
+ * 
+ * @author Zachary Norman
+ */
 public class Sticks {
 
 	private GUI gui;
