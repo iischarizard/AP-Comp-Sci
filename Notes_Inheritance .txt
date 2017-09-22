@@ -1,0 +1,53 @@
+Inheritance
+
+One of the most important concepts in OOP
+languages is inheritance. Inheritance allows a programmer to take aspects of one
+class and "import" them into another class.
+
+The class that provides the aspects is called the parent. The class that receives the aspects is called the child.
+
+The keyword extends allows a child to inherit/ steal code from the parent.
+
+	--------------------------------------------------
+	                Transportation
+					double speed
+					double mileage
+					double price
+					int passenger
+					move()
+	--------------------------------------------------
+	|               |                  |
+    |                \                 |
+    v                 v                v
+------------        ----------       ------
+Auto mobile          airplane         boat
+int numWheels
+String crankShaft
+------------        ----------       ------
+ |        |          |       |
+ |        |          |        \
+ v        v          v          v
+---     -----      -------    ---------
+car     truck      fighter    passenger
+---     -----       jet         plane
+| |                --------   ---------
+|     \                         |     |
+v        v                      v     v
+------  ---------            ------  ----
+Toyota    Honda               A380   B747
+Prius     Odyssey            ------  ----
+------  ----------
+
+Creating child objects
+ObjectCupType objectName = new ObjectDataType(); //polymorphism
+
+_____ cup types can hold _______ data types, but _______ cup types can NOT hold ________ data types.
+
+When using a generic cup type, you will only have access to fields and methods available to the data cup type. Other aspects will be "masked"
+
+While certain _____ methods won't be available. For those method choices that are available, Java will run the ________ version (if there is overriding occuring).
+
+These rules apply when creating arrays and arraylists.
+
+If you need access to child methods in a parent cup, you will have to _______ the cup into the _______. casting
+ 
