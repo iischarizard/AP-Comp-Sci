@@ -1,3 +1,5 @@
+package Letters;
+
 public abstract class Letter{
 
 	protected String value;
@@ -7,11 +9,6 @@ public abstract class Letter{
 		this.value = value;
 		this.lines = lines;
 		buildLetter();
-	}
-	
-	public void drawLetter(BannerGUI g){
-		for(String s : lines)
-			g.writeMessage(s);
 	}
 	public String getLine(int line){
 		return lines[line];

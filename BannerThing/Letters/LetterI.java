@@ -1,3 +1,4 @@
+package Letters;
 public class LetterI extends Letter{
 
 	public LetterI(){

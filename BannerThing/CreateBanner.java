@@ -1,3 +1,4 @@
+import Letters.*;
 public class CreateBanner{
 	
 	private Letter[] letters;
@@ -6,9 +7,9 @@ public class CreateBanner{
 	
 	public CreateBanner(){
 		message = "hi";
-		letters = new Letter[]{new LetterH(), new LetterI(),new LetterH(), new LetterI(),new LetterH(), new LetterI()};
+		letters = new Letter[]{new LetterE(), new LetterH(), new LetterI(), new LetterL(), new LetterO(), new LetterW(), new LetterR(), new LetterD(), new LetterExclamation()};
 		g = new BannerGUI();
-		g.drawLetters(letters, 5);
+		g.drawLetters(letters, "HELLO WORLD");
 		
 	}
 
