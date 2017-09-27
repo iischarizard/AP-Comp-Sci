@@ -1,15 +1,26 @@
 import Letters.*;
+import java.util.Scanner;
 public class CreateBanner{
 	
 	private Letter[] letters;
 	private BannerGUI g;
 	private String message;
+	private Scanner s;
 	
 	public CreateBanner(){
-		message = "hi";
-		letters = new Letter[]{new LetterE(), new LetterH(), new LetterI(), new LetterL(), new LetterO(), new LetterW(), new LetterR(), new LetterD(), new LetterExclamation()};
+		s = new Scanner(System.in);
+		message = "";
+		letters = new Letter[]{new LetterD(), new LetterE(), new LetterH(), new LetterI(), new LetterL(), new LetterO(), new LetterR(), new LetterW()};
 		g = new BannerGUI();
-		g.drawLetters(letters, "HELLO WORLD");
+		String lettersStr = "";
+		for(Letter l : letters)
+			if(letters[letters.length-1]==l)
+				lettersStr += l.getValue();
+			else
+				lettersStr += l.getValue() + ", ";
+		g.writeMessage("Write a message limited to the letters: " + lettersStr+":");
+		message = s.nextLine();
+		g.drawLetters(letters, message);
 		
 	}
 
