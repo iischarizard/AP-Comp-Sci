@@ -18,4 +18,11 @@ public abstract class Letter{
 	public String getValue(){return value;}
 	public void setValue(String val){value = val;}
 	
+	public String toString(){
+		String letter = "";
+		for(int i = 0; i < lines.length; i++)
+			letter += lines[0] + "\n";
+		return "The value is "+ value + ".\n The built letter is\n" + letter;
+	}
+	
 }

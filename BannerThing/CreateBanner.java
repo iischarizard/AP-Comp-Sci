@@ -1,14 +1,11 @@
 import Letters.*;
-import java.util.Scanner;
 public class CreateBanner{
 	
 	private Letter[] letters;
 	private BannerGUI g;
 	private String message;
-	private Scanner s;
 	
 	public CreateBanner(){
-		s = new Scanner(System.in);
 		message = "";
 		letters = new Letter[]{new LetterD(), new LetterE(), new LetterH(), new LetterI(), new LetterL(), new LetterO(), new LetterR(), new LetterW()};
 		g = new BannerGUI();
@@ -19,7 +16,7 @@ public class CreateBanner{
 			else
 				lettersStr += l.getValue() + ", ";
 		g.writeMessage("Write a message limited to the letters: " + lettersStr+":");
-		message = s.nextLine();
+		message = g.receivePlayerString();
 		g.drawLetters(letters, message);
 		
 	}
