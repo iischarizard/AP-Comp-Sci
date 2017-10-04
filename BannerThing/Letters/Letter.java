@@ -1,3 +1,7 @@
+/**
+ * The letter parent class
+ */
+
 package Letters;
 
 public abstract class Letter{
@@ -10,18 +14,21 @@ public abstract class Letter{
 		this.lines = lines;
 		buildLetter();
 	}
+	
+	//forces the children to have a build letter method to remind me to add the lines
+	public abstract void buildLetter();
+	
 	public String getLine(int line){
 		return lines[line];
 	}
-	public abstract void buildLetter();
 
 	public String getValue(){return value;}
 	
 	public String toString(){
-		String letter = "";
-		for(int i = 0; i < lines.length; i++)
-			letter += lines[0] + "\n";
-		return "The value is "+ value + ".\n The built letter is\n" + letter;
+		String line = "";
+		for(int i = 0; i < 5; i++)
+			line += lines[i] + "\n";
+		return "Value: " + value + "\nLines:\n"+line;
 	}
 	
 }
