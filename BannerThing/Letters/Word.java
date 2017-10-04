@@ -2,8 +2,8 @@ package Letters;
 
 public class Word{
 	
-	private String value;
-	private String[] lines;
+	private final String value;
+	private final String[] lines;
 	
 	public Word(String value, Letter[] letters){
 		this.value = value;
@@ -16,7 +16,6 @@ public class Word{
 	}
 	
 	public String getValue(){return value;}
-	public void setValue(String val){value = val;}
 	
 	private void buildWord(Letter[] letters){
 		for(int i = 0; i < lines.length; i++){

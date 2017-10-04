@@ -20,7 +20,9 @@ public class CreateBanner{
 		while(running){
 			g.writeMessage("Write a message limited to the letters: " + lettersStr+":");
 			message = g.receivePlayerString();
-			g.drawLetters(letters, message);
+			Word[] words = {new Word("hello", letters)};
+			g.drawWords(words);
+			//g.drawLetters(letters, message);
 			g.writeMessage("Would you like to type another message? Enter yes or no.");
 			running = g.receivePlayerBoolean();
 			g.receivePlayerString();

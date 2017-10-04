@@ -2,8 +2,8 @@ package Letters;
 
 public abstract class Letter{
 
-	protected String value;
-	protected String[] lines;
+	protected final String value;
+	protected final String[] lines;
 	
 	public Letter(String value, String[] lines){
 		this.value = value;
@@ -16,7 +16,6 @@ public abstract class Letter{
 	public abstract void buildLetter();
 
 	public String getValue(){return value;}
-	public void setValue(String val){value = val;}
 	
 	public String toString(){
 		String letter = "";
