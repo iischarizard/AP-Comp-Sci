@@ -5,11 +5,12 @@ public class BannerGUI extends GUI{
 	}
 	
 	public void drawLetters(Letter[] l, String message){
+		int wrapCounter = 0;
 		writeMessage(getHyphens(l, message));
 		writeMessage("");
 		for(int i = 0; i < 5; i++){
 			for(int j = 0; j < message.length(); j++){
-				if(message.charAt(j) == ' '){
+				if(message.substring(j, j+1).equals(" ")){
 					System.out.print("    ");
 				} else{
 					for(Letter let : l){
@@ -21,6 +22,7 @@ public class BannerGUI extends GUI{
 				}
 			}
 			System.out.println();
+			wrapCount++;
 		}
 		writeMessage(getHyphens(l, message));
 	}
