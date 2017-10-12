@@ -1,0 +1,6 @@
+Casting
+Java is a type-strong language, which means that when you define a variable you must also define its type. Once the type is set, it can NEVER change.
+Strong typing helps the compiler catch potentially fatal logical errors in the code
+But this creates difficulties when getting different variable types to interact. Casting is the solution to many of this problems.
+Casting means to convert one type to
+In order to cast the conversion 

@@ -36,10 +36,7 @@ public class Word {
 	}
 	
 
-	public String getLine(int line){
-		return lines[line];
-	}
-
+	public String getLine(int line){return lines[line];}
 	public String getValue(){return value;}
 	
 	public String toString(){

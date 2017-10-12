@@ -4,6 +4,7 @@ public class LetterB extends Letter{
 	public LetterB(){
 		super("B", new String[5]);
 	}
+	//REMEMBER TO ADD THE LINES
 	@Override
 	public void buildLetter(){
 		lines[0] = "BBBBBB  ";

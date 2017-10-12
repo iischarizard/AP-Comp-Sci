@@ -28,6 +28,7 @@ public class BannerGUI extends GUI{
 	 * @param w The array of words
 	 * @param wrap The number of letters before wrapping to the best of its abilities
 	 */
+	//******INCOMPLETE- need to wrap when word length exceeds wrap- does not currently********
 	public void drawWords(Word[] w, int wrap){
 		int numOfWordsBeforeWrap = 0, count = 0;
 		for(Word word : w){
@@ -111,8 +112,12 @@ public class BannerGUI extends GUI{
 		}
 		writeMessage("");
 		writeMessage(getHyphens(message.substring(0, wrapHolder)));
-		if(message.length()>wrap)
-			drawLetters(l, message.substring(wrap), wrap);
+		if(message.length()>wrap){
+			int index = wrap;
+			if(message.regionMatches(true, index, " ", 0, 1))
+				index++;
+			drawLetters(l, message.substring(index), wrap);
+		}
 	}
 	
 	/**

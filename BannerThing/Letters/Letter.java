@@ -16,7 +16,7 @@ public abstract class Letter{
 	}
 	
 	//forces the children to have a build letter method to remind me to add the lines
-	public abstract void buildLetter();
+	public abstract void buildLetter(){};
 	
 	public String getLine(int line){
 		return lines[line];
