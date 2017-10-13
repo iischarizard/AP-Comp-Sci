@@ -1,20 +1,18 @@
 public class Board{
 	
-	private int rows, collums;
+	private int size;
 	
 	private String[][] board;
 
-	public Board(int rows, int collums){
-		this.rows = rows;
-		this.collums = collums;
-		board = new String[rows][collums];
+	public Board(int size){
+		this.size = size;
+		board = new String[size][size];
 		clear();
 	}
 	
 	public Board(){
-		rows = 3;
-		collums = 3;
-		board = new String[rows][collums];
+		size = 3;
+		board = new String[size][size];
 		clear();
 	}
 	
@@ -26,15 +24,15 @@ public class Board{
 	}
 	
 	public String getSpace(int x, int y){return board[x][y];}
+	public String getSpace(int[] move){return board[move[0]][move[1]];}
 	public String[][] getBoard(){return board;}
 	
-	public int getRows(){return rows;}
-	public int getCollums(){return collums;}
+	public int getSize(){return size;}
 	
 	public void clear(){
-		for(int i = 0; i < rows; i++){
-			for(int j = 0; j < collums; j++){
-				board[i][j] = "";
+		for(int i = 0; i < size; i++){
+			for(int j = 0; j < size; j++){
+				board[i][j] = " ";
 			}
 		}
 	}
