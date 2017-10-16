@@ -70,13 +70,14 @@ public class Game{
 					return true;
 			}
 		}
-		for(int i = 0; i < board.getSize(); i++){
-			if(board.getSpace(i, board.getSize()-1-i) != state)
-				break;
-			if(i == board.getSize()-1)
-				return true;
-			}
-		
+		if(move[0]+move[1]==board.getSize()-1){
+			for(int i = 0; i < board.getSize(); i++){
+				if(board.getSpace(i, board.getSize()-1-i) != state)
+					break;
+				if(i == board.getSize()-1)
+					return true;
+				}
+		}
 		return false;
 	}
 
