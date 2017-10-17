@@ -7,20 +7,31 @@ public class Game{
 
 	public Game(){
 		g = new TicTacGUI();
-		board = new Board();
 		players = new Player[2];
 	}
 	
 	public void setUp(){
-		for(int i = 0; i < players.length; i++)
-			players[i] = new Player("");
+		g.writeMessage("Would you like a board size different from 3x3? Enter yes or no.");
+		if(g.receivePlayerBoolean())
+			board = new Board(g.receivePlayerInt());
+		else
+			board = new Board(3);
+		g.receivePlayerString();
+		for(int i = 0; i < players.length; i++){
+			g.writeMessage("What is player "+(i+1)+"'s name?");
+			players[i] = new Player(g.receivePlayerString());
+		}
+		g.writeMessage("---------------------------------");
+		g.writeMessage(players[0].getName()+" is X");
+		g.writeMessage(players[1].getName()+" is O");
+		g.writeMessage("---------------------------------");
 	}
 
 	public boolean play(){
 		boolean running = true;
 		board.clear();
+		int turn = 0;
 		while(running){
-			boolean x = true;
 			String state = "X";
 			for(Player p : players){
 				int[] move = p.takeTurn(g);
@@ -28,24 +39,40 @@ public class Game{
 					g.writeMessage("Not a valid move");
 					move = p.takeTurn(g);
 				}
-				if(x)
-					state = "X";
-				else
-					state = "O";
 				board.setSpace(move, state);
-				x = !x;
 				g.displayBoard(board);
-				if(determineWin(move, state)){g.writeMessage("Winner");running = false;break;}
+				if(determineWin(move, state)){
+					p.incrementWins();
+					g.writeMessage();
+					g.writeMessage(p.getName()+" is the winner!");
+					g.writeMessage();
+					running = false;
+					break;
+				}
+				if(state == "X")
+					state = "O";
+				else
+					state = "X";
+				turn++;
+				if(turn == board.getSize()*board.getSize()){
+					g.writeMessage();
+					g.writeMessage("It's a tie.");
+					g.writeMessage();
+					running = false;
+					break;
+				}
 			}
 		}
-	
+		for(Player p : players)
+			g.writeMessage(p.toString());
+		g.writeMessage("Would you like to play again? Enter yes or no.");
 	
 	
 		return g.receivePlayerBoolean();
 	}
 	
 	public void end(){
-	
+		g.writeMessage("Bye!");
 	}
 	
 	private boolean determineWin(int[] move, String state){
@@ -55,7 +82,6 @@ public class Game{
 			if(i == board.getSize()-1)
 				return true;
 		}
-		
 		for(int i = 0; i < board.getSize(); i ++){
 			if(board.getSpace(i, move[1])!=state)
 				break;

@@ -10,12 +10,6 @@ public class Board{
 		clear();
 	}
 	
-	public Board(){
-		size = 3;
-		board = new String[size][size];
-		clear();
-	}
-	
 	public void setSpace(int x, int y, String z){
 		board[x][y] = z;
 	}
@@ -26,6 +20,8 @@ public class Board{
 	public String getSpace(int x, int y){return board[x][y];}
 	public String getSpace(int[] move){return board[move[0]][move[1]];}
 	public String[][] getBoard(){return board;}
+	
+	public void setSize(int size){this.size = size; board = new String[size][size];}
 	
 	public int getSize(){return size;}
 	

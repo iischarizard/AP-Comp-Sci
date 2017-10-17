@@ -9,9 +9,21 @@ public class Player{
 	}
 	
 	public int[] takeTurn(TicTacGUI g){
+		g.writeMessage(name+": Enter the row number.");
 		int x = g.receivePlayerInt();
+		g.writeMessage(name+": Enter the slot number.");
 		int y = g.receivePlayerInt();
 		return new int[]{x-1, y-1};
+	}
+
+	public void incrementWins(){wins++;}
+
+	public String getName(){
+		return name;
+	}
+
+	public String toString(){
+		return "Name: "+name+"\nWins: "+wins;
 	}
 
 }
