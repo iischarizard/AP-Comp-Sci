@@ -45,6 +45,7 @@ public class BucketListMaker {
 			System.out.println("Your bucket list is currently:\n"+bl.getGoalsAsBucketList());
 			
 			if(bl.getGoals().size()>0){
+				//reset BUcket list
 				System.out.println("Would you like to make a new bucket list?");
 				if(receiveUserBoolean()){
 					file.delete();

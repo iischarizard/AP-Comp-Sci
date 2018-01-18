@@ -32,8 +32,8 @@ public class BucketList {
 		goals.remove(goal);
 	}
 	/**
-	 * removeGoal(int index) 
-	 * @param index
+	 * removeGoal(int index) removes the goal at the index
+	 * @param index the index of the goal
 	 */
 	public void removeGoal(int index){
 		goals.remove(goals.get(index));
@@ -96,12 +96,16 @@ public class BucketList {
 	public String getGoalsAsBucketList(){
 		String bucketList = "";
 		if(goals.size()!=0){
+			int notAchieved = 0;
 			for(Goal goal : goals){
 				if(goal.isAchieved())
 					bucketList += (goals.indexOf(goal)+1)+". "+goal.getName()+" --achieved\n";
-				else
-					bucketList += (goals.indexOf(goal)+1)+". "+goal.getName()+"\n";				
+				else{
+					bucketList += (goals.indexOf(goal)+1)+". "+goal.getName()+"\n";	
+					notAchieved++;
+				}			
 			}
+			bucketList += "\nYou have " + notAchieved + " unachieved goal(s).\n";
 		}else{
 			bucketList = "!!!You do not have any items in your bucket list!!!";
 		}
@@ -133,6 +137,6 @@ public class BucketList {
 	public ArrayList<Goal> getGoals(){
 		return goals;
 	}
-	public String toString(){return goalsToBucketList();}
+	public String toString(){return getGoalsAsBucketList();}
 
 }
