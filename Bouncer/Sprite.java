@@ -37,22 +37,18 @@ public class Sprite{
 		
 		//box.getChildren().add(circle);
 		
-		insideSprites.add(new InsideSprite(this, 100, 100));
-		insideSprites.add(new InsideSprite(this, 31, 40));
-		insideSprites.add(new InsideSprite(this, 50, 31));
+		insideSprites.add(new InsideSprite(this, 150, 100));
+		insideSprites.add(new InsideSprite(this, 31, 70));
+		insideSprites.add(new InsideSprite(this, 60, 30));
 		for(InsideSprite sprite : insideSprites)
 			box.getChildren().addAll(sprite.getNodes()); 
 		
 		timeline = new Timeline(new KeyFrame(Duration.millis(1000/60), new EventHandler<ActionEvent>(){ 
 
-			int boxVelX = 5;
-			int boxVelY = 5;
 			//int circleVelX = 5;
 			//int circleVelY = 6;
 			
 			public void handle(ActionEvent ae){
-				box.setTranslateX(box.getTranslateX()+boxVelX);
-				box.setTranslateY(box.getTranslateY()+boxVelY);
 				//circle.setCenterX(circle.getCenterX()+circleVelX);
 				//circle.setCenterY(circle.getCenterY()+circleVelY);
 				
@@ -64,6 +60,8 @@ public class Sprite{
 				//	circleVelX = -circleVelX;
 				//if(circle.getCenterY()+circle.getRadius()>box.getHeight()||circle.getCenterY()-circle.getRadius()<0)
 				//	circleVelY = -circleVelY;	
+				box.setTranslateX(box.getTranslateX()+boxVelX);
+				box.setTranslateY(box.getTranslateY()+boxVelY);
 			
 			}
 		}));
@@ -76,5 +74,14 @@ public class Sprite{
 	public Pane getSprite(){return box;}
 	public void play(){timeline.play(); for(InsideSprite sprite : insideSprites)sprite.play();}
 	public ArrayList<Node> getNodes(){return nodes;}
+	public void invert(){
+		
+		boxVelX = -boxVelX;
+		boxVelY = -boxVelY;
+		box.setTranslateX(box.getTranslateX()+boxVelX*2);
+		box.setTranslateY(box.getTranslateY()+boxVelY*2);
+		
+		
+	}
 
 }

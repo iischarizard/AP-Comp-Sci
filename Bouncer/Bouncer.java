@@ -29,7 +29,9 @@ public class Bouncer extends Application{
 		ArrayList<Sprite> sprites = new ArrayList<Sprite>();
 		
 		sprites.add(new Sprite(pane, 0, 0));
-		sprites.add(new Sprite(pane, 500, 300));
+		sprites.add(new Sprite(pane, 0, 300));
+		sprites.add(new Sprite(pane, 500, 500));
+		sprites.add(new Sprite(pane, 1000, 100));
 		
 		for(Sprite sprite : sprites){
 			pane.getChildren().add(sprite.getSprite());
@@ -37,14 +39,26 @@ public class Bouncer extends Application{
 		
 		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1000/60), ae ->{
 			for(Sprite spriteA : sprites){
+				boolean done = false;
 				for(Sprite spriteB : sprites){
 					if(spriteA != spriteB){
+						Pane spritea = spriteA.getSprite();
+						Pane spriteb = spriteB.getSprite();
+						if(spritea.getBoundsInParent().intersects(spriteb.getBoundsInParent())){
+							spriteA.invert();
+							spriteB.invert();
+							done = true;
+							break;
+						}
 					}
-				}		
+				}	
+				if(done)
+					break;	
 			}
 			
 		}));
 		timeline.setCycleCount(Animation.INDEFINITE);
+		timeline.play();
 		
 		
 		Scene scene = new Scene(rootPane, WIDTH, HEIGHT);
