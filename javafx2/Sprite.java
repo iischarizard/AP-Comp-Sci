@@ -32,9 +32,15 @@ public class Sprite{
 
 		timeline = new Timeline(new KeyFrame(Duration.millis(1000/60), new EventHandler<ActionEvent>(){
 			boolean out = true;
+			int test = 0;
 			@Override
 			public void handle(ActionEvent event){
-			
+				if(test<60){
+					test++;
+				}else{
+					testerino.setFill(new Color(Math.random(), Math.random(), Math.random(), 1));
+					test = 0;
+				}
 				testerino.setRotate(testerino.getRotate()+5);
 				if(testerino.getWidth()>500){
 					out = false;

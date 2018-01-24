@@ -18,10 +18,10 @@ public class JavaFx extends Application{
 		primaryStage.setTitle("test");
 		
 		BorderPane rootPane = new BorderPane();
-		VBox leftPane = new VBox();
-		HBox rightPane = new HBox();
+		HBox leftPane = new HBox();
+		VBox rightPane = new VBox();
 		StackPane bottomPane = new StackPane();
-		Pane topPane = new Pane();
+		FlowPane topPane = new FlowPane();
 		
 		
 		rootPane.setStyle("-fx-background-color: white");
@@ -41,23 +41,14 @@ public class JavaFx extends Application{
 		topPane.getChildren().addAll(topSprite.getNodes());
 		
 		
-		Button startStopAll = new Button("Start all");
+		Button startStopAll = new Button("Toggle all");
 		startStopAll.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent event){
-				if(startStopAll.getText().equals("Start all")){
-					leftSprite.startStop();
-					rightSprite.startStop();
-					topSprite.startStop();
-					bottomSprite.startStop();
-					startStopAll.setText("Stop all");
-				}else{
-					leftSprite.startStop();
-					rightSprite.startStop();
-					topSprite.startStop();
-					bottomSprite.startStop();
-					startStopAll.setText("Start all");
-				}
+				leftSprite.startStop();
+				rightSprite.startStop();
+				topSprite.startStop();
+				bottomSprite.startStop();
 			}
 		});
 		

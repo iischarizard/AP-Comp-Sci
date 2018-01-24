@@ -46,7 +46,7 @@ public class JavaFxTest extends Application{
 		}
 		testerino.setRotate(testerino.getRotate()+5);
 		
-		//testerino2.setFill(new Color(Math.random(), Math.random(), Math.random(), 1));
+		testerino2.setFill(new Color(Math.random(), Math.random(), Math.random(), 1));
 		if(testerino2.getRadius()>100){
 			testerino2.setRadius(20);
 			testerino2.setLayoutX(r.nextInt((int)(contentPane.getWidth()-200)));

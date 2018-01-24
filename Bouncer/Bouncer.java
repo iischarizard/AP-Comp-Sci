@@ -68,7 +68,7 @@ public class Bouncer extends Application{
 			sprite.play();
 		}
 	}
-	
+
 	
 	public static void main(String[] args){
 		launch(args);

@@ -32,10 +32,6 @@ public class Sprite{
 		box.setStyle("-fx-background-color: white");
 		box.setStyle("-fx-border-color: black");
 
-		//Circle circle = new Circle(100, 100, 30);
-		//circle.setFill(Color.BLACK);
-		
-		//box.getChildren().add(circle);
 		
 		insideSprites.add(new InsideSprite(this, 150, 100));
 		insideSprites.add(new InsideSprite(this, 31, 70));
@@ -43,28 +39,21 @@ public class Sprite{
 		for(InsideSprite sprite : insideSprites)
 			box.getChildren().addAll(sprite.getNodes()); 
 		
-		timeline = new Timeline(new KeyFrame(Duration.millis(1000/60), new EventHandler<ActionEvent>(){ 
-
-			//int circleVelX = 5;
-			//int circleVelY = 6;
-			
-			public void handle(ActionEvent ae){
-				//circle.setCenterX(circle.getCenterX()+circleVelX);
-				//circle.setCenterY(circle.getCenterY()+circleVelY);
+		timeline = new Timeline(new KeyFrame(Duration.millis(1000/60), ae -> {
 				
-				if(box.getTranslateX()+box.getWidth()>parent.getWidth()||box.getTranslateX()<0)
+				if(box.getTranslateX()+box.getWidth()>parent.getWidth()||box.getTranslateX()<0){
 					boxVelX = -boxVelX;
-				if(box.getTranslateY()+box.getHeight()>parent.getHeight()||box.getTranslateY()<0)
+					box.setTranslateX(box.getTranslateX()+boxVelX);
+				}
+				if(box.getTranslateY()+box.getHeight()>parent.getHeight()||box.getTranslateY()<0){
 					boxVelY = -boxVelY;		
-				//if(circle.getCenterX()+circle.getRadius()>box.getWidth()||circle.getCenterX()-circle.getRadius()<0)
-				//	circleVelX = -circleVelX;
-				//if(circle.getCenterY()+circle.getRadius()>box.getHeight()||circle.getCenterY()-circle.getRadius()<0)
-				//	circleVelY = -circleVelY;	
+					box.setTranslateY(box.getTranslateY()+boxVelY);
+				}
 				box.setTranslateX(box.getTranslateX()+boxVelX);
 				box.setTranslateY(box.getTranslateY()+boxVelY);
 			
 			}
-		}));
+		));
 		timeline.setCycleCount(Animation.INDEFINITE);
 		nodes.add(box);
 		
