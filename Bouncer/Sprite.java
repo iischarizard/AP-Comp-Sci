@@ -22,6 +22,7 @@ public class Sprite{
 	
 	private final int width = 200, height = 200;
 	private int boxVelX = 5, boxVelY = 5;
+	
 	public Sprite(Pane parent, int x, int y){
 		nodes = new ArrayList<Node>();
 		insideSprites = new ArrayList<InsideSprite>();
@@ -33,11 +34,11 @@ public class Sprite{
 		box.setStyle("-fx-border-color: black");
 
 		
-		insideSprites.add(new InsideSprite(this, 150, 100));
+		/*insideSprites.add(new InsideSprite(this, 150, 100));
 		insideSprites.add(new InsideSprite(this, 31, 70));
 		insideSprites.add(new InsideSprite(this, 60, 30));
 		for(InsideSprite sprite : insideSprites)
-			box.getChildren().addAll(sprite.getNodes()); 
+			box.getChildren().addAll(sprite.getNodes()); */
 		
 		timeline = new Timeline(new KeyFrame(Duration.millis(1000/60), ae -> {
 				
@@ -62,6 +63,14 @@ public class Sprite{
 	
 	public Pane getSprite(){return box;}
 	public void play(){timeline.play(); for(InsideSprite sprite : insideSprites)sprite.play();}
+	public void stop(){timeline.stop(); for(InsideSprite sprite : insideSprites)sprite.stop();}
+	
+	public InsideSprite addInsideSprite(InsideSprite insideSprite){
+		insideSprites.add(insideSprite); 
+		box.getChildren().addAll(insideSprites.get(insideSprites.size()-1).getPane());
+		return insideSprite;
+	}
+	
 	public ArrayList<Node> getNodes(){return nodes;}
 	public void invert(){
 		

@@ -7,6 +7,9 @@ import javafx.util.Duration;
 import javafx.animation.Timeline;
 import javafx.animation.KeyFrame;
 import javafx.animation.Animation;
+import javafx.scene.control.Label;
+import javafx.scene.control.Button;
+import javafx.geometry.Pos;
 
 public class Bouncer extends Application{
 
@@ -16,26 +19,50 @@ public class Bouncer extends Application{
 	public void start(Stage primaryStage){
 		
 		primaryStage.setTitle("Bouncer");
-		
-		BorderPane rootPane = new BorderPane();
-		Pane pane = new Pane();
-		
-		
-		rootPane.setStyle("-fx-background-color: white");
-		pane.setStyle("-fx-background-color: white");
-		
-		rootPane.setCenter(pane);
-		
 		ArrayList<Sprite> sprites = new ArrayList<Sprite>();
 		
-		sprites.add(new Sprite(pane, 0, 0));
+		BorderPane rootPane = new BorderPane();
+		rootPane.setStyle("-fx-background-color: white");
+		
+		Pane pane = new Pane();
+		pane.setStyle("-fx-background-color: white");
+		rootPane.setCenter(pane);
+		
+		
+		StackPane titlePane = new StackPane();
+		Label title = new Label("Bouncer");
+		titlePane.getChildren().add(title);
+		rootPane.setTop(titlePane);
+		
+		VBox controls = new VBox();
+		controls.setStyle("-fx-border-color: black");
+     	controls.setPrefWidth(200);
+		
+		
+		Button addCrate = new Button("+");
+		addCrate.setOnAction(ae -> {
+			sprites.add(new Sprite(pane, 0, 0));
+			pane.getChildren().add(sprites.get(sprites.size()-1).getSprite());
+			controls.getChildren().add(new SpriteControl(sprites.get(sprites.size()-1)).getPane());
+			
+			
+			
+		});
+		
+		controls.getChildren().addAll(addCrate);
+		
+		rootPane.setRight(controls);
+		
+		
+		
+		/*sprites.add(new Sprite(pane, 0, 0));
 		sprites.add(new Sprite(pane, 0, 300));
 		sprites.add(new Sprite(pane, 500, 500));
 		sprites.add(new Sprite(pane, 1000, 100));
 		
 		for(Sprite sprite : sprites){
 			pane.getChildren().add(sprite.getSprite());
-		}
+		}*/
 		
 		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1000/60), ae ->{
 			for(Sprite spriteA : sprites){
@@ -63,10 +90,7 @@ public class Bouncer extends Application{
 		
 		Scene scene = new Scene(rootPane, WIDTH, HEIGHT);
 		primaryStage.setScene(scene);
-		primaryStage.show();	
-		for(Sprite sprite : sprites){
-			sprite.play();
-		}
+		primaryStage.show();
 	}
 
 	

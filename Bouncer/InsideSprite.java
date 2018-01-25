@@ -19,11 +19,13 @@ public class InsideSprite{
 	private Timeline timeline;
 	private ArrayList<Node> nodes;
 	private Sprite parentSprite;
+	private Pane pane;
 	
 	
 	public InsideSprite(Sprite parentSprite, int x, int y){
 		nodes = new ArrayList<Node>();
 		this.parentSprite = parentSprite;
+		pane = new Pane();
 		
 		
 
@@ -38,11 +40,11 @@ public class InsideSprite{
 		Circle circle5 = new Circle(x-15, y+15, 15);
 		circle5.setFill(Color.YELLOW);
 		
-		nodes.add(circle);
-		nodes.add(circle2);
-		nodes.add(circle3);
-		nodes.add(circle4);
-		nodes.add(circle5);
+		pane.getChildren().add(circle);
+		pane.getChildren().add(circle2);
+		pane.getChildren().add(circle3);
+		pane.getChildren().add(circle4);
+		pane.getChildren().add(circle5);
 		
 		
 		timeline = new Timeline(new KeyFrame(Duration.millis(1000/60), new EventHandler<ActionEvent>(){ 
@@ -74,11 +76,13 @@ public class InsideSprite{
 			}
 		}));
 		timeline.setCycleCount(Animation.INDEFINITE);
-		
+		nodes.add(pane);
 	
 	}
 	
 	public void play(){timeline.play();}
+	public void stop(){timeline.stop();}
 	public ArrayList<Node> getNodes(){return nodes;}
+	public Pane getPane(){return pane;}
 
 }
