@@ -17,13 +17,17 @@ public class Sprite{
 
 	private Timeline timeline;
 	private ArrayList<Node> nodes;
-	private Pane box;
+	private Pane box, parent;
 	private ArrayList<InsideSprite> insideSprites;
 	
 	private final int width = 200, height = 200;
 	private int boxVelX = 5, boxVelY = 5;
 	
+	private boolean stationary;
+	
 	public Sprite(Pane parent, int x, int y){
+		this.parent = parent;
+		stationary = true;
 		nodes = new ArrayList<Node>();
 		insideSprites = new ArrayList<InsideSprite>();
 		box = new Pane();
@@ -62,8 +66,9 @@ public class Sprite{
 	}
 	
 	public Pane getSprite(){return box;}
-	public void play(){timeline.play(); for(InsideSprite sprite : insideSprites)sprite.play();}
-	public void stop(){timeline.stop(); for(InsideSprite sprite : insideSprites)sprite.stop();}
+	public Pane getParent(){return parent;}
+	public void play(){stationary = false; timeline.play(); for(InsideSprite sprite : insideSprites)sprite.play();}
+	public void stop(){stationary = true;timeline.stop(); for(InsideSprite sprite : insideSprites)sprite.stop();}
 	
 	public InsideSprite addInsideSprite(InsideSprite insideSprite){
 		insideSprites.add(insideSprite); 
@@ -72,14 +77,17 @@ public class Sprite{
 	}
 	
 	public ArrayList<Node> getNodes(){return nodes;}
+	public ArrayList<InsideSprite> getInsideSprites(){return insideSprites;}
 	public void invert(){
-		
-		boxVelX = -boxVelX;
-		boxVelY = -boxVelY;
-		box.setTranslateX(box.getTranslateX()+boxVelX*2);
-		box.setTranslateY(box.getTranslateY()+boxVelY*2);
-		
+		if(!stationary){
+			boxVelX = -boxVelX;
+			boxVelY = -boxVelY;
+			box.setTranslateX(box.getTranslateX()+boxVelX*2);
+			box.setTranslateY(box.getTranslateY()+boxVelY*2);
+		}
 		
 	}
 
+	public void setXY(int x, int y){box.setTranslateX(x); box.setTranslateY(y);}
+	
 }

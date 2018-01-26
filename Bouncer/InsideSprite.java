@@ -26,18 +26,22 @@ public class InsideSprite{
 		nodes = new ArrayList<Node>();
 		this.parentSprite = parentSprite;
 		pane = new Pane();
+		//pane.setStyle("-fx-border-color: black");
+		pane.setTranslateX(x);
+		pane.setTranslateY(y);
+		pane.setPrefSize(60, 60);
 		
 		
 
-		Circle circle = new Circle(x, y, 30);
+		Circle circle = new Circle(30, 30, 30);
 		circle.setFill(Color.BLACK);
-		Circle circle2 = new Circle(x+15, y-15, 15);
+		Circle circle2 = new Circle(45, 15, 15);
 		circle2.setFill(Color.BLUE);
-		Circle circle3 = new Circle(x-15, y-15, 15);
+		Circle circle3 = new Circle(15, 15, 15);
 		circle3.setFill(Color.RED);
-		Circle circle4 = new Circle(x+15, y+15, 15);
+		Circle circle4 = new Circle(45, 45, 15);
 		circle4.setFill(Color.GREEN);
-		Circle circle5 = new Circle(x-15, y+15, 15);
+		Circle circle5 = new Circle(15, 45, 15);
 		circle5.setFill(Color.YELLOW);
 		
 		pane.getChildren().add(circle);
@@ -54,25 +58,28 @@ public class InsideSprite{
 			
 			@Override
 			public void handle(ActionEvent ae){
-				for(Node node : nodes){
+				for(Node node : pane.getChildren()){
 					if(node instanceof Circle){
 						Circle circle = (Circle)node;
-						circle.setCenterX(circle.getCenterX()+circleVelX);
-						circle.setCenterY(circle.getCenterY()+circleVelY);
-						if(circle!=nodes.get(0)){
+						/*circle.setCenterX(circle.getCenterX()+circleVelX);
+						circle.setCenterY(circle.getCenterY()+circleVelY);*/
+						if(circle!=pane.getChildren().get(0)){
 							
-							Point3D test = new Point3D(((Circle)(nodes.get(0))).getCenterX(), ((Circle)(nodes.get(0))).getCenterY(), 0);
+							Point3D test = new Point3D(((Circle)(pane.getChildren().get(0))).getCenterX(), ((Circle)(pane.getChildren().get(0))).getCenterY(), 0);
 							circle.setRotationAxis(test);
-							circle.setRotate(circle.getRotate()+10);
+							circle.setRotate(circle.getRotate()+4);
 						}
 					}
 				}
 				
-				if(circle.getCenterX()+circle.getRadius()>parentSprite.getSprite().getWidth()||circle.getCenterX()-circle.getRadius()<0)
+				if(pane.getTranslateX()+pane.getWidth()>parentSprite.getSprite().getWidth()||pane.getTranslateX()<0){
 					circleVelX = -circleVelX;
-				if(circle.getCenterY()+circle.getRadius()>parentSprite.getSprite().getHeight()||circle.getCenterY()-circle.getRadius()<0)
-					circleVelY = -circleVelY;	
-			
+				}
+				if(pane.getTranslateY()+pane.getHeight()>parentSprite.getSprite().getHeight()||pane.getTranslateY()<0){
+					circleVelY = -circleVelY;		
+				}
+				pane.setTranslateX(pane.getTranslateX()+circleVelX);
+				pane.setTranslateY(pane.getTranslateY()+circleVelY);
 			}
 		}));
 		timeline.setCycleCount(Animation.INDEFINITE);

@@ -14,12 +14,12 @@ import javafx.geometry.Pos;
 public class Bouncer extends Application{
 
 	public static final int WIDTH = 1280, HEIGHT = 720;
-
+	private ArrayList<Sprite> sprites;
 	@Override
 	public void start(Stage primaryStage){
 		
 		primaryStage.setTitle("Bouncer");
-		ArrayList<Sprite> sprites = new ArrayList<Sprite>();
+		sprites = new ArrayList<Sprite>();
 		
 		BorderPane rootPane = new BorderPane();
 		rootPane.setStyle("-fx-background-color: white");
@@ -40,14 +40,16 @@ public class Bouncer extends Application{
 		
 		
 		Button addCrate = new Button("+");
+		
 		addCrate.setOnAction(ae -> {
+				
 			sprites.add(new Sprite(pane, 0, 0));
 			pane.getChildren().add(sprites.get(sprites.size()-1).getSprite());
-			controls.getChildren().add(new SpriteControl(sprites.get(sprites.size()-1)).getPane());
-			
+			controls.getChildren().add(new SpriteControl(controls, sprites, pane, sprites.get(sprites.size()-1)).getPane());
 			
 			
 		});
+		
 		
 		controls.getChildren().addAll(addCrate);
 		

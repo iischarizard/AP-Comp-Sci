@@ -10,7 +10,7 @@ public class SpriteControl{
 	private Sprite sprite;
 	private VBox pane;
 	
-	public SpriteControl(Sprite sprite){
+	public SpriteControl(VBox parent, ArrayList<Sprite> sprites, Pane spriteParent, Sprite sprite){
 		this.sprite = sprite;
 		pane = new VBox();
 		pane.setStyle("-fx-border-color: black");
@@ -34,10 +34,16 @@ public class SpriteControl{
 		});
 		Button add = new Button("+");
 		add.setOnAction(ae -> {
-			pane.getChildren().add((new InsideSpriteControl(sprite.addInsideSprite(new InsideSprite(sprite, 150, 100)))).getPane());
+			pane.getChildren().add((new InsideSpriteControl(pane, sprite, sprite.addInsideSprite(new InsideSprite(sprite, 50, 100)))).getPane());
+		});
+		Button remove = new Button("-");
+		remove.setOnAction(ae -> {
+			sprites.remove(sprite);
+			spriteParent.getChildren().remove(sprite.getSprite());
+			parent.getChildren().remove(pane);
 		});
 		
-		controls.getChildren().addAll(name, startStop, add);
+		controls.getChildren().addAll(name, startStop, add, remove);
 		pane.getChildren().add(controls);
 	
 	}
