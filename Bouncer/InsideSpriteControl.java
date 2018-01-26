@@ -13,8 +13,8 @@ public class InsideSpriteControl{
 	public InsideSpriteControl(VBox parent, Sprite parentSprite, InsideSprite insideSprite){
 		this.insideSprite = insideSprite;
 		pane = new HBox();
-		Label name = new Label("InsideSprite");
-		Button startStop = new Button("Start");
+		Label name = new Label(insideSprite.getName());
+		Button startStop = new Button("Stop");
 		startStop.setOnAction(ae -> {
 		
 			if(startStop.getText().equals("Start")){

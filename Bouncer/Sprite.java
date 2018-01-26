@@ -10,6 +10,7 @@ import javafx.event.EventHandler;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.control.Label;
 
 import java.util.ArrayList;
 
@@ -21,12 +22,19 @@ public class Sprite{
 	private ArrayList<InsideSprite> insideSprites;
 	
 	private final int width = 200, height = 200;
-	private int boxVelX = 5, boxVelY = 5;
+	private int boxVelX, boxVelY;
 	
 	private boolean stationary;
 	
-	public Sprite(Pane parent, int x, int y){
+	private String name;
+	
+	public Sprite(String name, Pane parent, int x, int y, int xSpeed, int ySpeed){
 		this.parent = parent;
+		this.name = name;
+		
+		boxVelX = xSpeed;
+		boxVelY = ySpeed;
+		
 		stationary = true;
 		nodes = new ArrayList<Node>();
 		insideSprites = new ArrayList<InsideSprite>();
@@ -36,13 +44,12 @@ public class Sprite{
 		box.setPrefSize(200, 200);
 		box.setStyle("-fx-background-color: white");
 		box.setStyle("-fx-border-color: black");
-
 		
-		/*insideSprites.add(new InsideSprite(this, 150, 100));
-		insideSprites.add(new InsideSprite(this, 31, 70));
-		insideSprites.add(new InsideSprite(this, 60, 30));
-		for(InsideSprite sprite : insideSprites)
-			box.getChildren().addAll(sprite.getNodes()); */
+		Label nameL = new Label(name);
+		nameL.setTranslateY(-15);
+		
+		box.getChildren().add(nameL);
+
 		
 		timeline = new Timeline(new KeyFrame(Duration.millis(1000/60), ae -> {
 				
@@ -51,7 +58,7 @@ public class Sprite{
 					box.setTranslateX(box.getTranslateX()+boxVelX);
 				}
 				if(box.getTranslateY()+box.getHeight()>parent.getHeight()||box.getTranslateY()<0){
-					boxVelY = -boxVelY;		
+					boxVelY = -boxVelY;
 					box.setTranslateY(box.getTranslateY()+boxVelY);
 				}
 				box.setTranslateX(box.getTranslateX()+boxVelX);
@@ -73,12 +80,12 @@ public class Sprite{
 	public InsideSprite addInsideSprite(InsideSprite insideSprite){
 		insideSprites.add(insideSprite); 
 		box.getChildren().addAll(insideSprites.get(insideSprites.size()-1).getPane());
+		insideSprite.play();
 		return insideSprite;
 	}
 	
-	public ArrayList<Node> getNodes(){return nodes;}
 	public ArrayList<InsideSprite> getInsideSprites(){return insideSprites;}
-	public void invert(){
+	public void collide(){
 		if(!stationary){
 			boxVelX = -boxVelX;
 			boxVelY = -boxVelY;
@@ -89,5 +96,6 @@ public class Sprite{
 	}
 
 	public void setXY(int x, int y){box.setTranslateX(x); box.setTranslateY(y);}
+	public String getName(){return name;}
 	
 }

@@ -42,9 +42,11 @@ public class Bouncer extends Application{
 		Button addCrate = new Button("+");
 		
 		addCrate.setOnAction(ae -> {
-				
-			sprites.add(new Sprite(pane, 0, 0));
+			
+			//sprites.add(new Sprite("Sprite "+(sprites.size()+1), pane, 0, 0, (int)(Math.random() * 7)+3, (int)(Math.random() * 7)+3));
+			sprites.add(new Sprite("Sprite "+(sprites.size()+1), pane, 0, 0, 5, 6));
 			pane.getChildren().add(sprites.get(sprites.size()-1).getSprite());
+			sprites.get(sprites.size()-1).play();
 			controls.getChildren().add(new SpriteControl(controls, sprites, pane, sprites.get(sprites.size()-1)).getPane());
 			
 			
@@ -56,16 +58,6 @@ public class Bouncer extends Application{
 		rootPane.setRight(controls);
 		
 		
-		
-		/*sprites.add(new Sprite(pane, 0, 0));
-		sprites.add(new Sprite(pane, 0, 300));
-		sprites.add(new Sprite(pane, 500, 500));
-		sprites.add(new Sprite(pane, 1000, 100));
-		
-		for(Sprite sprite : sprites){
-			pane.getChildren().add(sprite.getSprite());
-		}*/
-		
 		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1000/60), ae ->{
 			for(Sprite spriteA : sprites){
 				boolean done = false;
@@ -74,8 +66,8 @@ public class Bouncer extends Application{
 						Pane spritea = spriteA.getSprite();
 						Pane spriteb = spriteB.getSprite();
 						if(spritea.getBoundsInParent().intersects(spriteb.getBoundsInParent())){
-							spriteA.invert();
-							spriteB.invert();
+							spriteA.collide();
+							spriteB.collide();
 							done = true;
 							break;
 						}

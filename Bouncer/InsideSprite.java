@@ -20,13 +20,13 @@ public class InsideSprite{
 	private ArrayList<Node> nodes;
 	private Sprite parentSprite;
 	private Pane pane;
+	private String name;
 	
-	
-	public InsideSprite(Sprite parentSprite, int x, int y){
-		nodes = new ArrayList<Node>();
+	public InsideSprite(String name, Sprite parentSprite, int x, int y){
 		this.parentSprite = parentSprite;
+		this.name = name;
+		nodes = new ArrayList<Node>();
 		pane = new Pane();
-		//pane.setStyle("-fx-border-color: black");
 		pane.setTranslateX(x);
 		pane.setTranslateY(y);
 		pane.setPrefSize(60, 60);
@@ -61,8 +61,6 @@ public class InsideSprite{
 				for(Node node : pane.getChildren()){
 					if(node instanceof Circle){
 						Circle circle = (Circle)node;
-						/*circle.setCenterX(circle.getCenterX()+circleVelX);
-						circle.setCenterY(circle.getCenterY()+circleVelY);*/
 						if(circle!=pane.getChildren().get(0)){
 							
 							Point3D test = new Point3D(((Circle)(pane.getChildren().get(0))).getCenterX(), ((Circle)(pane.getChildren().get(0))).getCenterY(), 0);
@@ -91,5 +89,5 @@ public class InsideSprite{
 	public void stop(){timeline.stop();}
 	public ArrayList<Node> getNodes(){return nodes;}
 	public Pane getPane(){return pane;}
-
+	public String getName(){return name;}
 }
