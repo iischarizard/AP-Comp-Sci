@@ -28,7 +28,9 @@ public class Sprite{
 	
 	private String name;
 	
-	public Sprite(String name, Pane parent, int x, int y, int xSpeed, int ySpeed){
+	private int insideSpriteCount;
+	
+	public Sprite(String name, Pane parent, int xSpeed, int ySpeed){
 		this.parent = parent;
 		this.name = name;
 		
@@ -36,11 +38,16 @@ public class Sprite{
 		boxVelY = ySpeed;
 		
 		stationary = true;
+		
+		insideSpriteCount = 0;
+		
 		nodes = new ArrayList<Node>();
+		
 		insideSprites = new ArrayList<InsideSprite>();
+		
 		box = new Pane();
-		box.setTranslateX(x);
-		box.setTranslateY(y);
+		box.setTranslateX(0);
+		box.setTranslateY(0);
 		box.setPrefSize(200, 200);
 		box.setStyle("-fx-background-color: white");
 		box.setStyle("-fx-border-color: black");
@@ -54,6 +61,7 @@ public class Sprite{
 		timeline = new Timeline(new KeyFrame(Duration.millis(1000/60), ae -> {
 				
 				if(box.getTranslateX()+box.getWidth()>parent.getWidth()||box.getTranslateX()<0){
+					int newVel = -boxVelX*(int)((Math.random() * 10) + 5);
 					boxVelX = -boxVelX;
 					box.setTranslateX(box.getTranslateX()+boxVelX);
 				}
@@ -74,8 +82,8 @@ public class Sprite{
 	
 	public Pane getSprite(){return box;}
 	public Pane getParent(){return parent;}
-	public void play(){stationary = false; timeline.play(); for(InsideSprite sprite : insideSprites)sprite.play();}
-	public void stop(){stationary = true;timeline.stop(); for(InsideSprite sprite : insideSprites)sprite.stop();}
+	public void play(){stationary = false; timeline.play();}
+	public void stop(){stationary = true;timeline.stop();}
 	
 	public InsideSprite addInsideSprite(InsideSprite insideSprite){
 		insideSprites.add(insideSprite); 
@@ -95,7 +103,8 @@ public class Sprite{
 		
 	}
 
-	public void setXY(int x, int y){box.setTranslateX(x); box.setTranslateY(y);}
+	//public void setXY(int x, int y){box.setTranslateX(x); box.setTranslateY(y);}
 	public String getName(){return name;}
+	public int incrementInsideSpriteCount(){return ++insideSpriteCount;}
 	
 }

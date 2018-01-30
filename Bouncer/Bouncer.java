@@ -10,11 +10,15 @@ import javafx.animation.Animation;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.geometry.Pos;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 
 public class Bouncer extends Application{
 
 	public static final int WIDTH = 1280, HEIGHT = 720;
 	private ArrayList<Sprite> sprites;
+	
+	int numSprites = 0;
 	@Override
 	public void start(Stage primaryStage){
 		
@@ -41,14 +45,16 @@ public class Bouncer extends Application{
 		
 		Button addCrate = new Button("+");
 		
-		addCrate.setOnAction(ae -> {
-			
-			//sprites.add(new Sprite("Sprite "+(sprites.size()+1), pane, 0, 0, (int)(Math.random() * 7)+3, (int)(Math.random() * 7)+3));
-			sprites.add(new Sprite("Sprite "+(sprites.size()+1), pane, 0, 0, 5, 6));
-			pane.getChildren().add(sprites.get(sprites.size()-1).getSprite());
-			sprites.get(sprites.size()-1).play();
-			controls.getChildren().add(new SpriteControl(controls, sprites, pane, sprites.get(sprites.size()-1)).getPane());
-			
+		addCrate.setOnAction(new EventHandler<ActionEvent>(){
+			@Override
+			public void handle(ActionEvent ae){
+				numSprites++;
+				//sprites.add(new Sprite("Sprite "+(sprites.size()+1), pane, 0, 0, (int)(Math.random() * 7)+3, (int)(Math.random() * 7)+3));
+				sprites.add(new Sprite("Sprite "+/*(sprites.size()+1)*/numSprites, pane, 5, 6));
+				pane.getChildren().add(sprites.get(sprites.size()-1).getSprite());
+				sprites.get(sprites.size()-1).play();
+				controls.getChildren().add(new SpriteControl(controls, sprites, pane, sprites.get(sprites.size()-1)).getPane());
+			}
 			
 		});
 		

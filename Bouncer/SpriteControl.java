@@ -34,7 +34,7 @@ public class SpriteControl{
 		});
 		Button add = new Button("+");
 		add.setOnAction(ae -> {
-			pane.getChildren().add((new InsideSpriteControl(pane, sprite, sprite.addInsideSprite(new InsideSprite("InsideSprite "+(sprite.getInsideSprites().size()+1), sprite, 50, 100)))).getPane());
+			pane.getChildren().add((new InsideSpriteControl(pane, sprite, sprite.addInsideSprite(new InsideSprite("InsideSprite "+sprite.incrementInsideSpriteCount(), sprite, 0, 0)))).getPane());
 		});
 		Button remove = new Button("-");
 		remove.setOnAction(ae -> {
