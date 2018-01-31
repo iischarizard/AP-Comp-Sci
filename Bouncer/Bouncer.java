@@ -28,9 +28,9 @@ public class Bouncer extends Application{
 		BorderPane rootPane = new BorderPane();
 		rootPane.setStyle("-fx-background-color: white");
 		
-		Pane pane = new Pane();
-		pane.setStyle("-fx-background-color: white");
-		rootPane.setCenter(pane);
+		Pane playground = new Pane();
+		playground.setStyle("-fx-background-color: white");
+		rootPane.setCenter(playground);
 		
 		
 		StackPane titlePane = new StackPane();
@@ -50,10 +50,10 @@ public class Bouncer extends Application{
 			public void handle(ActionEvent ae){
 				numSprites++;
 				//sprites.add(new Sprite("Sprite "+(sprites.size()+1), pane, 0, 0, (int)(Math.random() * 7)+3, (int)(Math.random() * 7)+3));
-				sprites.add(new Sprite("Sprite "+/*(sprites.size()+1)*/numSprites, pane, 5, 6));
-				pane.getChildren().add(sprites.get(sprites.size()-1).getSprite());
+				sprites.add(new Sprite("Sprite "+/*(sprites.size()+1)*/numSprites, playground, 5, 6));
+				playground.getChildren().add(sprites.get(sprites.size()-1).getSprite());
 				sprites.get(sprites.size()-1).play();
-				controls.getChildren().add(new SpriteControl(controls, sprites, pane, sprites.get(sprites.size()-1)).getPane());
+				controls.getChildren().add(new SpriteControl(controls, sprites, playground, sprites.get(sprites.size()-1)).getPane());
 			}
 			
 		});
@@ -72,8 +72,8 @@ public class Bouncer extends Application{
 						Pane spritea = spriteA.getSprite();
 						Pane spriteb = spriteB.getSprite();
 						if(spritea.getBoundsInParent().intersects(spriteb.getBoundsInParent())){
-							spriteA.collide();
-							spriteB.collide();
+							spriteA.collide(spriteB);
+							spriteB.collide(spriteA);
 							done = true;
 							break;
 						}

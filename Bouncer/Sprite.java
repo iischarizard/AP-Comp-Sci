@@ -60,14 +60,35 @@ public class Sprite{
 		
 		timeline = new Timeline(new KeyFrame(Duration.millis(1000/60), ae -> {
 				
-				if(box.getTranslateX()+box.getWidth()>parent.getWidth()||box.getTranslateX()<0){
-					int newVel = -boxVelX*(int)((Math.random() * 10) + 5);
-					boxVelX = -boxVelX;
-					box.setTranslateX(box.getTranslateX()+boxVelX);
+				if(box.getTranslateX()+box.getWidth()>parent.getWidth()){
+					double random = ((Math.random() * 10) + 5)/10;
+					if((int)(boxVelX*random) == 0)
+						boxVelX = -boxVelX*5;
+					else
+						boxVelX = -(int)(boxVelX*random);
+					box.setTranslateX(parent.getWidth()-width);
+				} else if(box.getTranslateX()<0){
+					double random = ((Math.random() * 10) + 5)/10;
+					if((int)(boxVelX*random) == 0)
+						boxVelX = -boxVelX*5;
+					else
+						boxVelX = -(int)(boxVelX*random);
+					box.setTranslateX(0);
 				}
-				if(box.getTranslateY()+box.getHeight()>parent.getHeight()||box.getTranslateY()<0){
-					boxVelY = -boxVelY;
-					box.setTranslateY(box.getTranslateY()+boxVelY);
+				if(box.getTranslateY()+box.getHeight()>parent.getHeight()){
+					double random = ((Math.random() * 10) + 5)/10;
+					if((int)(boxVelY*random) == 0)
+						boxVelY = -boxVelY*5;
+					else
+						boxVelY = -(int)(boxVelY*random);
+					box.setTranslateY(parent.getHeight()-height);
+				} else if(box.getTranslateY()<0){
+					double random = ((Math.random() * 10) + 5)/10;
+					if((int)(boxVelY*random) == 0)
+						boxVelY = -boxVelY*5;
+					else
+						boxVelY = -(int)(boxVelY*random);
+					box.setTranslateY(0);
 				}
 				box.setTranslateX(box.getTranslateX()+boxVelX);
 				box.setTranslateY(box.getTranslateY()+boxVelY);
@@ -93,8 +114,12 @@ public class Sprite{
 	}
 	
 	public ArrayList<InsideSprite> getInsideSprites(){return insideSprites;}
-	public void collide(){
+	public void collide(Sprite sprite){
 		if(!stationary){
+			double left = box.getTranslateX()-(sprite.getSprite().getTranslateX()+sprite.getSprite().getWidth());
+		
+		
+		
 			boxVelX = -boxVelX;
 			boxVelY = -boxVelY;
 			box.setTranslateX(box.getTranslateX()+boxVelX*2);
@@ -106,5 +131,10 @@ public class Sprite{
 	//public void setXY(int x, int y){box.setTranslateX(x); box.setTranslateY(y);}
 	public String getName(){return name;}
 	public int incrementInsideSpriteCount(){return ++insideSpriteCount;}
+	
+	public int getBoxVelX(){return boxVelX;}
+	public int getBoxVelY(){return boxVelY;}
+	public int getWidth(){return width;}
+	public int getHeight(){return height;}
 	
 }

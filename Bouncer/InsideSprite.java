@@ -70,12 +70,38 @@ public class InsideSprite{
 					}
 				}
 				
-				if(pane.getTranslateX()+pane.getWidth()>parentSprite.getSprite().getWidth()||pane.getTranslateX()<0){
-					circleVelX = -circleVelX;
+				
+				if(pane.getTranslateX()+pane.getWidth()>parentSprite.getSprite().getWidth()){
+					double random = ((Math.random() * 10) + 5)/10;
+					if((int)(circleVelX*random) == 0)
+						circleVelX = -circleVelX*5;
+					else
+						circleVelX = -(int)(circleVelX*random);
+					pane.setTranslateX(parentSprite.getSprite().getWidth()-pane.getWidth());
+				} else if(pane.getTranslateX()<0){
+					double random = ((Math.random() * 10) + 5)/10;
+					if((int)(circleVelX*random) == 0)
+						circleVelX = -circleVelX*5;
+					else
+						circleVelX = -(int)(circleVelX*random);
+					pane.setTranslateX(0);
 				}
-				if(pane.getTranslateY()+pane.getHeight()>parentSprite.getSprite().getHeight()||pane.getTranslateY()<0){
-					circleVelY = -circleVelY;		
+				if(pane.getTranslateY()+pane.getHeight()>parentSprite.getSprite().getHeight()){
+					double random = ((Math.random() * 10) + 5)/10;
+					if((int)(circleVelY*random) == 0)
+						circleVelY = -circleVelY*5;
+					else
+						circleVelY = -(int)(circleVelY*random);
+					pane.setTranslateY(parentSprite.getSprite().getHeight()-pane.getHeight());
+				} else if(pane.getTranslateY()<0){
+					double random = ((Math.random() * 10) + 5)/10;
+					if((int)(circleVelY*random) == 0)
+						circleVelY = -circleVelY*5;
+					else
+						circleVelY = -(int)(circleVelY*random);
+					pane.setTranslateY(0);
 				}
+				
 				pane.setTranslateX(pane.getTranslateX()+circleVelX);
 				pane.setTranslateY(pane.getTranslateY()+circleVelY);
 			}

@@ -45,6 +45,7 @@ public class SpriteControl{
 		
 		controls.getChildren().addAll(name, startStop, add, remove);
 		pane.getChildren().add(controls);
+		
 	
 	}
 	
