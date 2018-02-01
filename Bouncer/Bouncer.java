@@ -79,8 +79,8 @@ public class Bouncer extends Application{
 						}
 					}
 				}	
-				if(done)
-					break;	
+				//if(done)
+				//	break;	
 			}
 			
 		}));

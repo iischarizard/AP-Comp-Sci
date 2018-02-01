@@ -116,14 +116,32 @@ public class Sprite{
 	public ArrayList<InsideSprite> getInsideSprites(){return insideSprites;}
 	public void collide(Sprite sprite){
 		if(!stationary){
-			double left = box.getTranslateX()-(sprite.getSprite().getTranslateX()+sprite.getSprite().getWidth());
+			double left = Math.abs(box.getTranslateX()-(sprite.getSprite().getTranslateX()+sprite.getSprite().getWidth())),
+			right = Math.abs((box.getTranslateX()+box.getWidth())-sprite.getSprite().getTranslateX()),
+			top = Math.abs(box.getTranslateY()-(sprite.getSprite().getTranslateY()+sprite.getSprite().getHeight())),
+			bottom = Math.abs((box.getTranslateY()+box.getHeight())-sprite.getSprite().getTranslateY());
+		
+			int min = Math.min((int)Math.min(left, right), (int)Math.min(top, bottom));
+			
+			if(min == left){
+				if(boxVelX<0)
+					boxVelX = -boxVelX;
+			}else if (min == right){
+				if(boxVelX>0)
+					boxVelX = -boxVelX;
+			}else if (min == top){
+				if(boxVelY<0)
+					boxVelY = -boxVelY;
+			}else{
+				if(boxVelY>0)
+					boxVelY = -boxVelY;
+			}
 		
 		
-		
-			boxVelX = -boxVelX;
-			boxVelY = -boxVelY;
-			box.setTranslateX(box.getTranslateX()+boxVelX*2);
-			box.setTranslateY(box.getTranslateY()+boxVelY*2);
+			//boxVelX = -boxVelX;
+			//boxVelY = -boxVelY;
+			box.setTranslateX(box.getTranslateX()+boxVelX);
+			box.setTranslateY(box.getTranslateY()+boxVelY);
 		}
 		
 	}
