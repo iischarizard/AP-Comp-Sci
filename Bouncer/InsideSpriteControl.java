@@ -10,7 +10,7 @@ public class InsideSpriteControl{
 	private InsideSprite insideSprite;
 	private HBox pane;
 	
-	public InsideSpriteControl(VBox parent, Sprite parentSprite, InsideSprite insideSprite){
+	public InsideSpriteControl(VBox parent, Crate parentCrate, InsideSprite insideSprite){
 		this.insideSprite = insideSprite;
 		pane = new HBox();
 		Label name = new Label(insideSprite.getName());
@@ -29,8 +29,8 @@ public class InsideSpriteControl{
 		
 		Button remove = new Button("-");
 		remove.setOnAction(ae ->{
-			parentSprite.getSprite().getChildren().remove(insideSprite.getPane());
-			parentSprite.getInsideSprites().remove(insideSprite);
+			parentCrate.getSprite().getChildren().remove(insideSprite.getPane());
+			parentCrate.getInsideSprites().remove(insideSprite);
 			parent.getChildren().remove(pane);
 			
 		});

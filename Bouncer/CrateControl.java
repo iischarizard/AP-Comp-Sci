@@ -5,41 +5,41 @@ import javafx.scene.control.Label;
 
 import java.util.ArrayList;
 
-public class SpriteControl{
+public class CrateControl{
 
-	private Sprite sprite;
+	private Crate crate;
 	private VBox pane;
 	
-	public SpriteControl(VBox parent, ArrayList<Sprite> sprites, Pane spriteParent, Sprite sprite){
-		this.sprite = sprite;
+	public CrateControl(VBox parent, ArrayList<Crate> crates, Pane crateParent, Crate crate){
+		this.crate = crate;
 		pane = new VBox();
 		pane.setStyle("-fx-border-color: black");
      	pane.setPrefWidth(150);
      	pane.setPrefHeight(150);
 		
 		HBox controls = new HBox();
-		Label name = new Label(sprite.getName());
+		Label name = new Label(crate.getName());
 		
 		Button startStop = new Button("Stop");
 		startStop.setOnAction(ae -> {
 		
 			if(startStop.getText().equals("Start")){
-				sprite.play();
+				crate.play();
 				startStop.setText("Stop");
 			}else{
-				sprite.stop();
+				crate.stop();
 				startStop.setText("Start");
 			}
 			
 		});
 		Button add = new Button("+");
 		add.setOnAction(ae -> {
-			pane.getChildren().add((new InsideSpriteControl(pane, sprite, sprite.addInsideSprite(new InsideSprite("InsideSprite "+sprite.incrementInsideSpriteCount(), sprite, 0, 0)))).getPane());
+			pane.getChildren().add((new InsideSpriteControl(pane, crate, crate.addInsideSprite(new InsideSprite("InsideSprite "+crate.incrementInsideSpriteCount(), crate, 0, 0)))).getPane());
 		});
 		Button remove = new Button("-");
 		remove.setOnAction(ae -> {
-			sprites.remove(sprite);
-			spriteParent.getChildren().remove(sprite.getSprite());
+			crates.remove(crate);
+			crateParent.getChildren().remove(crate.getSprite());
 			parent.getChildren().remove(pane);
 		});
 		

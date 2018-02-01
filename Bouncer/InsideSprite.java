@@ -18,12 +18,12 @@ public class InsideSprite{
 
 	private Timeline timeline;
 	private ArrayList<Node> nodes;
-	private Sprite parentSprite;
+	private Crate parentCrate;
 	private Pane pane;
 	private String name;
 	
-	public InsideSprite(String name, Sprite parentSprite, int x, int y){
-		this.parentSprite = parentSprite;
+	public InsideSprite(String name, Crate parentCrate, int x, int y){
+		this.parentCrate = parentCrate;
 		this.name = name;
 		nodes = new ArrayList<Node>();
 		pane = new Pane();
@@ -71,13 +71,13 @@ public class InsideSprite{
 				}
 				
 				
-				if(pane.getTranslateX()+pane.getWidth()>parentSprite.getSprite().getWidth()){
+				if(pane.getTranslateX()+pane.getWidth()>parentCrate.getSprite().getWidth()){
 					double random = ((Math.random() * 10) + 5)/10;
 					if((int)(circleVelX*random) == 0)
 						circleVelX = -circleVelX*5;
 					else
 						circleVelX = -(int)(circleVelX*random);
-					pane.setTranslateX(parentSprite.getSprite().getWidth()-pane.getWidth());
+					pane.setTranslateX(parentCrate.getSprite().getWidth()-pane.getWidth());
 				} else if(pane.getTranslateX()<0){
 					double random = ((Math.random() * 10) + 5)/10;
 					if((int)(circleVelX*random) == 0)
@@ -86,13 +86,13 @@ public class InsideSprite{
 						circleVelX = -(int)(circleVelX*random);
 					pane.setTranslateX(0);
 				}
-				if(pane.getTranslateY()+pane.getHeight()>parentSprite.getSprite().getHeight()){
+				if(pane.getTranslateY()+pane.getHeight()>parentCrate.getSprite().getHeight()){
 					double random = ((Math.random() * 10) + 5)/10;
 					if((int)(circleVelY*random) == 0)
 						circleVelY = -circleVelY*5;
 					else
 						circleVelY = -(int)(circleVelY*random);
-					pane.setTranslateY(parentSprite.getSprite().getHeight()-pane.getHeight());
+					pane.setTranslateY(parentCrate.getSprite().getHeight()-pane.getHeight());
 				} else if(pane.getTranslateY()<0){
 					double random = ((Math.random() * 10) + 5)/10;
 					if((int)(circleVelY*random) == 0)

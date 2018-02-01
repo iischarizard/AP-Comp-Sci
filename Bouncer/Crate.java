@@ -14,10 +14,9 @@ import javafx.scene.control.Label;
 
 import java.util.ArrayList;
 
-public class Sprite{
+public class Crate{
 
 	private Timeline timeline;
-	private ArrayList<Node> nodes;
 	private Pane box, parent;
 	private ArrayList<InsideSprite> insideSprites;
 	
@@ -30,7 +29,7 @@ public class Sprite{
 	
 	private int insideSpriteCount;
 	
-	public Sprite(String name, Pane parent, int xSpeed, int ySpeed){
+	public Crate(String name, Pane parent, int xSpeed, int ySpeed){
 		this.parent = parent;
 		this.name = name;
 		
@@ -41,7 +40,6 @@ public class Sprite{
 		
 		insideSpriteCount = 0;
 		
-		nodes = new ArrayList<Node>();
 		
 		insideSprites = new ArrayList<InsideSprite>();
 		
@@ -96,14 +94,14 @@ public class Sprite{
 			}
 		));
 		timeline.setCycleCount(Animation.INDEFINITE);
-		nodes.add(box);
 		
 	
 	}
 	
 	public Pane getSprite(){return box;}
-	public Pane getParent(){return parent;}
+	
 	public void play(){stationary = false; timeline.play();}
+	
 	public void stop(){stationary = true;timeline.stop();}
 	
 	public InsideSprite addInsideSprite(InsideSprite insideSprite){
@@ -114,7 +112,7 @@ public class Sprite{
 	}
 	
 	public ArrayList<InsideSprite> getInsideSprites(){return insideSprites;}
-	public void collide(Sprite sprite){
+	public void collide(Crate sprite){
 		if(!stationary){
 			double left = Math.abs(box.getTranslateX()-(sprite.getSprite().getTranslateX()+sprite.getSprite().getWidth())),
 			right = Math.abs((box.getTranslateX()+box.getWidth())-sprite.getSprite().getTranslateX()),
@@ -138,15 +136,12 @@ public class Sprite{
 			}
 		
 		
-			//boxVelX = -boxVelX;
-			//boxVelY = -boxVelY;
 			box.setTranslateX(box.getTranslateX()+boxVelX);
 			box.setTranslateY(box.getTranslateY()+boxVelY);
 		}
 		
 	}
 
-	//public void setXY(int x, int y){box.setTranslateX(x); box.setTranslateY(y);}
 	public String getName(){return name;}
 	public int incrementInsideSpriteCount(){return ++insideSpriteCount;}
 	

@@ -16,30 +16,32 @@ import javafx.event.EventHandler;
 public class Bouncer extends Application{
 
 	public static final int WIDTH = 1280, HEIGHT = 720;
-	private ArrayList<Sprite> sprites;
+	private ArrayList<Crate> crates;
+	private int numCrates = 0;
 	
-	int numSprites = 0;
 	@Override
 	public void start(Stage primaryStage){
 		
 		primaryStage.setTitle("Bouncer");
-		sprites = new ArrayList<Sprite>();
+		crates = new ArrayList<Crate>();
 		
 		BorderPane rootPane = new BorderPane();
 		rootPane.setStyle("-fx-background-color: white");
 		
 		Pane playground = new Pane();
-		playground.setStyle("-fx-background-color: white");
+		playground.setStyle("-fx-background-color: mistyrose");
 		rootPane.setCenter(playground);
 		
 		
 		StackPane titlePane = new StackPane();
 		Label title = new Label("Bouncer");
 		titlePane.getChildren().add(title);
+		titlePane.setStyle("-fx-background-color: lime");
 		rootPane.setTop(titlePane);
 		
 		VBox controls = new VBox();
 		controls.setStyle("-fx-border-color: black");
+		controls.setStyle("-fx-background-color: thistle");
      	controls.setPrefWidth(200);
 		
 		
@@ -48,12 +50,12 @@ public class Bouncer extends Application{
 		addCrate.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent ae){
-				numSprites++;
+				numCrates++;
 				//sprites.add(new Sprite("Sprite "+(sprites.size()+1), pane, 0, 0, (int)(Math.random() * 7)+3, (int)(Math.random() * 7)+3));
-				sprites.add(new Sprite("Sprite "+/*(sprites.size()+1)*/numSprites, playground, 5, 6));
-				playground.getChildren().add(sprites.get(sprites.size()-1).getSprite());
-				sprites.get(sprites.size()-1).play();
-				controls.getChildren().add(new SpriteControl(controls, sprites, playground, sprites.get(sprites.size()-1)).getPane());
+				crates.add(new Crate("Crate "+/*(sprites.size()+1)*/numCrates, playground, 5, 6));
+				playground.getChildren().add(crates.get(crates.size()-1).getSprite());
+				crates.get(crates.size()-1).play();
+				controls.getChildren().add(new CrateControl(controls, crates, playground, crates.get(crates.size()-1)).getPane());
 			}
 			
 		});
@@ -65,9 +67,9 @@ public class Bouncer extends Application{
 		
 		
 		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1000/60), ae ->{
-			for(Sprite spriteA : sprites){
+			for(Crate spriteA : crates){
 				boolean done = false;
-				for(Sprite spriteB : sprites){
+				for(Crate spriteB : crates){
 					if(spriteA != spriteB){
 						Pane spritea = spriteA.getSprite();
 						Pane spriteb = spriteB.getSprite();
