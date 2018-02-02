@@ -14,7 +14,6 @@ public class CrateControl{
 		this.crate = crate;
 		pane = new VBox();
 		pane.setStyle("-fx-border-color: black");
-     	pane.setPrefWidth(150);
      	pane.setPrefHeight(150);
 		
 		HBox controls = new HBox();

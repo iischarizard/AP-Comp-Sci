@@ -51,8 +51,7 @@ public class Bouncer extends Application{
 			@Override
 			public void handle(ActionEvent ae){
 				numCrates++;
-				//sprites.add(new Sprite("Sprite "+(sprites.size()+1), pane, 0, 0, (int)(Math.random() * 7)+3, (int)(Math.random() * 7)+3));
-				crates.add(new Crate("Crate "+/*(sprites.size()+1)*/numCrates, playground, 5, 6));
+				crates.add(new Crate("Crate "+numCrates, playground, 5, 6));
 				playground.getChildren().add(crates.get(crates.size()-1).getSprite());
 				crates.get(crates.size()-1).play();
 				controls.getChildren().add(new CrateControl(controls, crates, playground, crates.get(crates.size()-1)).getPane());
@@ -68,7 +67,6 @@ public class Bouncer extends Application{
 		
 		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1000/60), ae ->{
 			for(Crate spriteA : crates){
-				boolean done = false;
 				for(Crate spriteB : crates){
 					if(spriteA != spriteB){
 						Pane spritea = spriteA.getSprite();
@@ -76,13 +74,10 @@ public class Bouncer extends Application{
 						if(spritea.getBoundsInParent().intersects(spriteb.getBoundsInParent())){
 							spriteA.collide(spriteB);
 							spriteB.collide(spriteA);
-							done = true;
 							break;
 						}
 					}
 				}	
-				//if(done)
-				//	break;	
 			}
 			
 		}));
