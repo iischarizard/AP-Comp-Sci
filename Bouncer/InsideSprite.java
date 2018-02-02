@@ -53,8 +53,8 @@ public class InsideSprite{
 		
 		timeline = new Timeline(new KeyFrame(Duration.millis(1000/60), new EventHandler<ActionEvent>(){ 
 
-			int circleVelX = 5;
-			int circleVelY = 6;
+			double circleVelX = 5;
+			double circleVelY = 6;
 			
 			@Override
 			public void handle(ActionEvent ae){
@@ -72,6 +72,7 @@ public class InsideSprite{
 				
 				
 				if(pane.getTranslateX()+pane.getWidth()>parentCrate.getSprite().getWidth()){
+					//circleVelX = -(Math.random()*10)+5;
 					double random = ((Math.random() * 10) + 5)/10;
 					if((int)(circleVelX*random) == 0)
 						circleVelX = -circleVelX*5;
@@ -79,6 +80,7 @@ public class InsideSprite{
 						circleVelX = -(int)(circleVelX*random);
 					pane.setTranslateX(parentCrate.getSprite().getWidth()-pane.getWidth());
 				} else if(pane.getTranslateX()<0){
+					//circleVelX = (Math.random()*10)+5;
 					double random = ((Math.random() * 10) + 5)/10;
 					if((int)(circleVelX*random) == 0)
 						circleVelX = -circleVelX*5;
@@ -87,6 +89,7 @@ public class InsideSprite{
 					pane.setTranslateX(0);
 				}
 				if(pane.getTranslateY()+pane.getHeight()>parentCrate.getSprite().getHeight()){
+					//circleVelY = -(Math.random()*10)+5;
 					double random = ((Math.random() * 10) + 5)/10;
 					if((int)(circleVelY*random) == 0)
 						circleVelY = -circleVelY*5;
@@ -94,6 +97,7 @@ public class InsideSprite{
 						circleVelY = -(int)(circleVelY*random);
 					pane.setTranslateY(parentCrate.getSprite().getHeight()-pane.getHeight());
 				} else if(pane.getTranslateY()<0){
+					//circleVelY = (Math.random()*10)+5;
 					double random = ((Math.random() * 10) + 5)/10;
 					if((int)(circleVelY*random) == 0)
 						circleVelY = -circleVelY*5;
