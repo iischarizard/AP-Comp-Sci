@@ -5,12 +5,19 @@ import javafx.scene.control.Label;
 
 import java.util.ArrayList;
 
+/**
+ * CrateControl controls its given crate
+ *
+ * @author Zachary Norman
+ *
+ */
+
 public class CrateControl{
 
 	private Crate crate;
 	private VBox pane;
 	
-	public CrateControl(VBox parent, ArrayList<Crate> crates, Pane crateParent, Crate crate){
+	public CrateControl(VBox parent, ArrayList<Crate> crates, Crate crate){
 		this.crate = crate;
 		pane = new VBox();
 		pane.setStyle("-fx-border-color: black");
@@ -18,6 +25,8 @@ public class CrateControl{
 		
 		HBox controls = new HBox();
 		Label name = new Label(crate.getName());
+		
+		Pane crateParent = crate.getParent();
 		
 		Button startStop = new Button("Stop");
 		startStop.setOnAction(ae -> {
@@ -33,12 +42,12 @@ public class CrateControl{
 		});
 		Button add = new Button("+");
 		add.setOnAction(ae -> {
-			pane.getChildren().add((new InsideSpriteControl(pane, crate, crate.addInsideSprite(new InsideSprite("InsideSprite "+crate.incrementInsideSpriteCount(), crate, 0, 0)))).getPane());
+			pane.getChildren().add((new InsideSpriteControl(pane, crate, crate.addInsideSprite(new InsideSprite("InsideSprite "+crate.incrementInsideSpriteCount(), crate)))).getPane());
 		});
 		Button remove = new Button("-");
 		remove.setOnAction(ae -> {
 			crates.remove(crate);
-			crateParent.getChildren().remove(crate.getSprite());
+			crateParent.getChildren().remove(crate.getCrate());
 			parent.getChildren().remove(pane);
 		});
 		

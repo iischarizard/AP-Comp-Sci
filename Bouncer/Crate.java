@@ -14,6 +14,13 @@ import javafx.scene.control.Label;
 
 import java.util.ArrayList;
 
+/**
+ * Crate bounces around its parent and can contain inside sprites
+ *
+ * @author Zachary Norman
+ *
+ */
+
 public class Crate{
 
 	private Timeline timeline;
@@ -29,12 +36,12 @@ public class Crate{
 	
 	private int insideSpriteCount;
 	
-	public Crate(String name, Pane parent, int xSpeed, int ySpeed){
+	public Crate(String name, Pane parent){
 		this.parent = parent;
 		this.name = name;
 		
-		boxVelX = xSpeed;
-		boxVelY = ySpeed;
+		boxVelX = 5;
+		boxVelY = 6;
 		
 		stationary = true;
 		
@@ -98,26 +105,31 @@ public class Crate{
 	
 	}
 	
-	public Pane getSprite(){return box;}
+	public Pane getCrate(){return box;}
+	public Pane getParent(){return parent;}
 	
 	public void play(){stationary = false; timeline.play();}
 	
 	public void stop(){stationary = true;timeline.stop();}
 	
+	//adds the given inside sprite to own list of sprites and starts its stuff
 	public InsideSprite addInsideSprite(InsideSprite insideSprite){
 		insideSprites.add(insideSprite); 
 		box.getChildren().addAll(insideSprites.get(insideSprites.size()-1).getPane());
 		insideSprite.play();
+		insideSprite.animate();
 		return insideSprite;
 	}
 	
 	public ArrayList<InsideSprite> getInsideSprites(){return insideSprites;}
+	
+	//Checks for collision side so it knows which way to bounce
 	public void collide(Crate sprite){
 		if(!stationary){
-			double left = Math.abs(box.getTranslateX()-(sprite.getSprite().getTranslateX()+sprite.getSprite().getWidth())),
-			right = Math.abs((box.getTranslateX()+box.getWidth())-sprite.getSprite().getTranslateX()),
-			top = Math.abs(box.getTranslateY()-(sprite.getSprite().getTranslateY()+sprite.getSprite().getHeight())),
-			bottom = Math.abs((box.getTranslateY()+box.getHeight())-sprite.getSprite().getTranslateY());
+			double left = Math.abs(box.getTranslateX()-(sprite.getCrate().getTranslateX()+sprite.getCrate().getWidth())),
+			right = Math.abs((box.getTranslateX()+box.getWidth())-sprite.getCrate().getTranslateX()),
+			top = Math.abs(box.getTranslateY()-(sprite.getCrate().getTranslateY()+sprite.getCrate().getHeight())),
+			bottom = Math.abs((box.getTranslateY()+box.getHeight())-sprite.getCrate().getTranslateY());
 		
 			int min = Math.min((int)Math.min(left, right), (int)Math.min(top, bottom));
 			

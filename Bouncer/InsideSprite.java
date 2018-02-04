@@ -14,25 +14,30 @@ import javafx.geometry.Point3D;
 
 import java.util.ArrayList;
 
+/**
+ * InsideSprite bounces around its parent crate and animates
+ *
+ * @author Zachary Norman
+ *
+ */
+
 public class InsideSprite{
 
-	private Timeline timeline;
+	private Timeline movement, animation;
 	private ArrayList<Node> nodes;
 	private Crate parentCrate;
 	private Pane pane;
 	private String name;
 	
-	public InsideSprite(String name, Crate parentCrate, int x, int y){
+	public InsideSprite(String name, Crate parentCrate){
 		this.parentCrate = parentCrate;
 		this.name = name;
 		nodes = new ArrayList<Node>();
 		pane = new Pane();
-		pane.setTranslateX(x);
-		pane.setTranslateY(y);
+		pane.setTranslateX(0);
+		pane.setTranslateY(0);
 		pane.setPrefSize(60, 60);
 		
-		
-
 		Circle circle = new Circle(30, 30, 30);
 		circle.setFill(Color.BLACK);
 		Circle circle2 = new Circle(45, 15, 15);
@@ -51,56 +56,53 @@ public class InsideSprite{
 		pane.getChildren().add(circle5);
 		
 		
-		timeline = new Timeline(new KeyFrame(Duration.millis(1000/60), new EventHandler<ActionEvent>(){ 
+		movement = new Timeline(new KeyFrame(Duration.millis(1000/60), new EventHandler<ActionEvent>(){ 
 
 			double circleVelX = 5;
 			double circleVelY = 6;
 			
 			@Override
 			public void handle(ActionEvent ae){
-				for(Node node : pane.getChildren()){
-					if(node instanceof Circle){
-						Circle circle = (Circle)node;
-						if(circle!=pane.getChildren().get(0)){
-							
-							Point3D test = new Point3D(((Circle)(pane.getChildren().get(0))).getCenterX(), ((Circle)(pane.getChildren().get(0))).getCenterY(), 0);
-							circle.setRotationAxis(test);
-							circle.setRotate(circle.getRotate()+4);
-						}
-					}
-				}
 				
 				
-				if(pane.getTranslateX()+pane.getWidth()>parentCrate.getSprite().getWidth()){
+				if(pane.getTranslateX()+pane.getWidth()>parentCrate.getCrate().getWidth()){
 					//circleVelX = -(Math.random()*10)+5;
 					double random = ((Math.random() * 10) + 5)/10;
 					if((int)(circleVelX*random) == 0)
 						circleVelX = -circleVelX*5;
-					else
+					else if((int)(circleVelX*random) >= 25)
+						circleVelX = -circleVelX/5;
+					else	
 						circleVelX = -(int)(circleVelX*random);
-					pane.setTranslateX(parentCrate.getSprite().getWidth()-pane.getWidth());
+					pane.setTranslateX(parentCrate.getCrate().getWidth()-pane.getWidth());
 				} else if(pane.getTranslateX()<0){
 					//circleVelX = (Math.random()*10)+5;
 					double random = ((Math.random() * 10) + 5)/10;
 					if((int)(circleVelX*random) == 0)
 						circleVelX = -circleVelX*5;
+					else if((int)(circleVelX*random) >= 25)
+						circleVelX = -circleVelX/5;
 					else
 						circleVelX = -(int)(circleVelX*random);
 					pane.setTranslateX(0);
 				}
-				if(pane.getTranslateY()+pane.getHeight()>parentCrate.getSprite().getHeight()){
+				if(pane.getTranslateY()+pane.getHeight()>parentCrate.getCrate().getHeight()){
 					//circleVelY = -(Math.random()*10)+5;
 					double random = ((Math.random() * 10) + 5)/10;
 					if((int)(circleVelY*random) == 0)
 						circleVelY = -circleVelY*5;
+					else if((int)(circleVelY*random) >= 25)
+						circleVelY = -circleVelY/5;
 					else
 						circleVelY = -(int)(circleVelY*random);
-					pane.setTranslateY(parentCrate.getSprite().getHeight()-pane.getHeight());
+					pane.setTranslateY(parentCrate.getCrate().getHeight()-pane.getHeight());
 				} else if(pane.getTranslateY()<0){
 					//circleVelY = (Math.random()*10)+5;
 					double random = ((Math.random() * 10) + 5)/10;
 					if((int)(circleVelY*random) == 0)
 						circleVelY = -circleVelY*5;
+					else if((int)(circleVelY*random) >= 25)
+						circleVelY = -circleVelY/5;
 					else
 						circleVelY = -(int)(circleVelY*random);
 					pane.setTranslateY(0);
@@ -110,13 +112,32 @@ public class InsideSprite{
 				pane.setTranslateY(pane.getTranslateY()+circleVelY);
 			}
 		}));
-		timeline.setCycleCount(Animation.INDEFINITE);
+		movement.setCycleCount(Animation.INDEFINITE);
+		
+		animation = new Timeline(new KeyFrame(Duration.millis(1000/60), ae -> {
+			
+			for(Node node : pane.getChildren()){
+				if(node instanceof Circle){
+					Circle circleTemp = (Circle)node;
+					if(circleTemp!=pane.getChildren().get(0)){
+						
+						Point3D test = new Point3D(((Circle)(pane.getChildren().get(0))).getCenterX(), ((Circle)(pane.getChildren().get(0))).getCenterY(), 0);
+						circleTemp.setRotationAxis(test);
+						circleTemp.setRotate(circleTemp.getRotate()+3);
+					}
+				}
+			}
+			
+		}));
+		animation.setCycleCount(Animation.INDEFINITE);
 		nodes.add(pane);
 	
 	}
 	
-	public void play(){timeline.play();}
-	public void stop(){timeline.stop();}
+	public void play(){movement.play();}
+	public void stop(){movement.stop();}
+	public void animate(){animation.play();}
+	public void unanimate(){animation.stop();}
 	public ArrayList<Node> getNodes(){return nodes;}
 	public Pane getPane(){return pane;}
 	public String getName(){return name;}

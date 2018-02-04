@@ -5,10 +5,19 @@ import javafx.scene.control.Label;
 
 import java.util.ArrayList;
 
+/**
+ * InsideSpriteControl contains the controls for the insideSprite
+ *
+ * @author Zachary Norman
+ *
+ */
+
 public class InsideSpriteControl{
 
+	//fields
 	private InsideSprite insideSprite;
 	private HBox pane;
+	
 	
 	public InsideSpriteControl(VBox parent, Crate parentCrate, InsideSprite insideSprite){
 		this.insideSprite = insideSprite;
@@ -27,14 +36,27 @@ public class InsideSpriteControl{
 			
 		});
 		
+		Button toggleAnimation = new Button("Unanimate");
+		toggleAnimation.setOnAction(ae -> {
+		
+			if(toggleAnimation.getText().equals("Unanimate")){
+				insideSprite.unanimate();
+				toggleAnimation.setText("Animate");
+			}else{
+				insideSprite.animate();
+				toggleAnimation.setText("Unanimate");
+			}
+			
+		});
+		
 		Button remove = new Button("-");
 		remove.setOnAction(ae ->{
-			parentCrate.getSprite().getChildren().remove(insideSprite.getPane());
+			parentCrate.getCrate().getChildren().remove(insideSprite.getPane());
 			parentCrate.getInsideSprites().remove(insideSprite);
 			parent.getChildren().remove(pane);
 			
 		});
-		pane.getChildren().addAll(name, startStop, remove);
+		pane.getChildren().addAll(name, startStop, toggleAnimation, remove);
 		
 		
 	}
