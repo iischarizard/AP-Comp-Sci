@@ -10,26 +10,14 @@ import javafx.event.EventHandler;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.geometry.Point3D;
 
 import java.util.ArrayList;
+public class Sprite1 extends InsideSprite{
 
-/**
- * InsideSprite bounces around its parent crate and animates
- *
- * @author Zachary Norman
- *
- */
-
-public class InsideSprite{
-
-	protected Timeline movement, animation;
-	protected ArrayList<Node> nodes;
-	protected Crate parentCrate;
-	protected Pane pane;
-	protected String name;
-	
-	public InsideSprite(String name, Crate parentCrate){
+	public Sprite1(String name, Crate parentCrate){
+		super(name, parentCrate);
 		this.parentCrate = parentCrate;
 		this.name = name;
 		nodes = new ArrayList<Node>();
@@ -38,18 +26,18 @@ public class InsideSprite{
 		pane.setTranslateY(0);
 		pane.setPrefSize(60, 60);
 		
-		Circle circle = new Circle(30, 30, 30);
-		circle.setFill(Color.BLACK);
-		Circle circle2 = new Circle(45, 15, 15);
+		Rectangle rect = new Rectangle(0, 0, 60, 60);
+		rect.setFill(Color.BLACK);
+		Rectangle circle2 = new Rectangle(30, 0, 30, 30);
 		circle2.setFill(Color.BLUE);
-		Circle circle3 = new Circle(15, 15, 15);
+		Rectangle circle3 = new Rectangle(0, 0, 30, 30);
 		circle3.setFill(Color.RED);
-		Circle circle4 = new Circle(45, 45, 15);
+		Rectangle circle4 = new Rectangle(30, 30, 30, 30);
 		circle4.setFill(Color.GREEN);
-		Circle circle5 = new Circle(15, 45, 15);
+		Rectangle circle5 = new Rectangle(0, 30, 30, 30);
 		circle5.setFill(Color.YELLOW);
 		
-		pane.getChildren().add(circle);
+		pane.getChildren().add(rect);
 		pane.getChildren().add(circle2);
 		pane.getChildren().add(circle3);
 		pane.getChildren().add(circle4);
@@ -117,12 +105,12 @@ public class InsideSprite{
 		animation = new Timeline(new KeyFrame(Duration.millis(1000/60), ae -> {
 			
 			for(Node node : pane.getChildren()){
-				if(node instanceof Circle){
-					Circle circleTemp = (Circle)node;
+				if(node instanceof Rectangle){
+					Rectangle circleTemp = (Rectangle)node;
 					if(circleTemp!=pane.getChildren().get(0)){
 						
-						Point3D test = new Point3D(((Circle)(pane.getChildren().get(0))).getCenterX(), ((Circle)(pane.getChildren().get(0))).getCenterY(), 0);
-						circleTemp.setRotationAxis(test);
+						//Point3D test = new Point3D(((Rectangle)(pane.getChildren().get(0))).getLayoutX(), ((Rectangle)(pane.getChildren().get(0))).getLayoutY(), 0);
+						//circleTemp.setRotationAxis(test);
 						circleTemp.setRotate(circleTemp.getRotate()+3);
 					}
 				}
@@ -131,15 +119,9 @@ public class InsideSprite{
 		}));
 		animation.setCycleCount(Animation.INDEFINITE);
 		nodes.add(pane);
+		
 	
 	}
-	
-	public void play(){movement.play();}
-	public void stop(){movement.stop();}
-	public void animate(){animation.play();}
-	public void unanimate(){animation.stop();}
-	public ArrayList<Node> getNodes(){return nodes;}
-	public Pane getPane(){return pane;}
-	public String getName(){return name;}
-	public Crate getParent(){return parentCrate;}
+
+
 }

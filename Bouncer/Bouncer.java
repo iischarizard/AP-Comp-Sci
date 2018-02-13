@@ -51,7 +51,7 @@ public class Bouncer extends Application{
 		VBox controls = new VBox();
 		controls.setStyle("-fx-border-color: black");
 		controls.setStyle("-fx-background-color: thistle");
-     	controls.setPrefWidth(225);
+     	controls.setPrefWidth(300);
 		
 		
 		Button addCrate = new Button("+");

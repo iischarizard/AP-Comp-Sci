@@ -56,11 +56,11 @@ public class InsideSpriteControl{
 			parent.getChildren().remove(pane);
 			
 		});
+		
 		pane.getChildren().addAll(name, startStop, toggleAnimation, remove);
 		
 		
 	}
-	
 	public HBox getPane(){return pane;}
 
 

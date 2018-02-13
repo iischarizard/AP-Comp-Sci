@@ -42,7 +42,11 @@ public class CrateControl{
 		});
 		Button add = new Button("+");
 		add.setOnAction(ae -> {
-			pane.getChildren().add((new InsideSpriteControl(pane, crate, crate.addInsideSprite(new InsideSprite("InsideSprite "+crate.incrementInsideSpriteCount(), crate)))).getPane());
+			if(Math.random()*10 > 5)
+				pane.getChildren().add((new InsideSpriteControl(pane, crate, crate.addInsideSprite(new InsideSprite("InsideSprite "+crate.incrementInsideSpriteCount(), crate)))).getPane());
+			else
+				pane.getChildren().add((new InsideSpriteControl(pane, crate, crate.addInsideSprite(new Sprite1("Sprite "+crate.incrementInsideSpriteCount(), crate)))).getPane());
+				
 		});
 		Button remove = new Button("-");
 		remove.setOnAction(ae -> {
