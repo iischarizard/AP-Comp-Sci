@@ -19,7 +19,7 @@ public class Word extends TextFlow{
 		}
 		getChildren().addAll(letters);
 		speed = (float)Math.random();
-		setLayoutX(Math.random()*Constants.WIDTH-getWidth()*2);
+		setLayoutX(Math.random()*Constants.WIDTH);
 		//setLayoutY(Math.random()*Constants.HEIGHT-getHeight());
 	}
 	

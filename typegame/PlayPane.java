@@ -2,9 +2,8 @@
 import java.util.ArrayList;
 
 
-import javafx.scene.control.Button;
+import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
-import javafx.scene.control.ComboBox;
 import java.util.concurrent.ThreadLocalRandom;
 
 
@@ -16,7 +15,7 @@ public class PlayPane extends Pane {
 	private WordList list;
 	
 	private ComboBox wordListsComboBox;
-	private Button start;
+	private Button start, createNewWordList;
 	
 	public PlayPane(TypingGame game){
 		//setStyle("-fx-background-color: red");
@@ -27,11 +26,23 @@ public class PlayPane extends Pane {
 		lists.add(new WordList("Random Testerino"));
 		list = lists.get(0);
 		
-		wordListsComboBox = new ComboBox();
 		
+		wordListsComboBox = new ComboBox();
 		for(WordList wordList : lists)
 			wordListsComboBox.getItems().add(wordList.getName());
 		wordListsComboBox.setValue(list.getName()); 
+		
+		
+		createNewWordList = new Button("Create new word list");
+		createNewWordList.setLayoutX(300);
+		createNewWordList.setOnAction(ae ->{
+		
+			getChildren().removeAll(getChildren());
+			TextField fileName = new TextField("WordList");
+			
+		
+		});
+		
 		
 		
 		start = new Button("Play");
@@ -39,7 +50,7 @@ public class PlayPane extends Pane {
 		start.setLayoutY(Constants.HEIGHT/2 - start.getHeight()/2);
 		start.setOnAction(ae -> {
 			game.startGameLoop(); 
-			getChildren().removeAll(start, wordListsComboBox);
+			getChildren().removeAll(getChildren());
 			for(WordList wordList : lists){
 				if(wordListsComboBox.getValue().equals(wordList.getName())){
 					list = wordList;
@@ -65,7 +76,7 @@ public class PlayPane extends Pane {
 		
 		
 		
-		getChildren().addAll(start, wordListsComboBox);
+		getChildren().addAll(start, wordListsComboBox, createNewWordList);
 		
 	}
 	
@@ -95,7 +106,7 @@ public class PlayPane extends Pane {
 
 	private void finish(){
 		wordsAppearedIndexList.clear();
-		getChildren().addAll(start, wordListsComboBox);
+		getChildren().addAll(start, wordListsComboBox, createNewWordList);
 		
 	}
 	

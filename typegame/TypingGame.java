@@ -4,10 +4,10 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.event.EventHandler;
 
 public class TypingGame {
 	
@@ -56,86 +56,12 @@ public class TypingGame {
 	private void finishSetup(){
 
 		Scene scene = new Scene(rootPane, Constants.WIDTH, Constants.HEIGHT);
-		scene.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
-			if(running){
-				//System.out.println(key.getText());
-				if(key.getCode() != KeyCode.SHIFT)
-				if(key.isShiftDown()){
-					String text = key.getText();
-					switch(key.getText()){
-					case ",":
-						text = "<";
-						break;
-					case ".":
-						text = ">";
-						break;
-					case "/":
-						text = "?";
-						break;
-					case ";":
-						text = ":";
-						break;
-					case "'":
-						text = "\"";
-						break;
-					case "[":
-						text = "{";
-						break;
-					case "]":
-						text = "}";
-						break;
-					case "`":
-						text = "~";
-						break;
-					case "1":
-						text = "!";
-						break;
-					case "2":
-						text = "@";
-						break;
-					case "3":
-						text = "#";
-						break;
-					case "4":
-						text = "$";
-						break;
-					case "5":
-						text = "%";
-						break;
-					case "6":
-						text = "^";
-						break;
-					case "7":
-						text = "&";
-						break;
-					case "8":
-						text = "*";
-						break;
-					case "9":
-						text = "(";
-						break;
-					case "0":
-						text = ")";
-						break;
-					case "-":
-						text = "_";
-						break;
-					case "=":
-						text = "+";
-						break;
-					default:
-						text = text.toUpperCase();
-							
-					}
-					playPane.checkHead(text);
-					
-				}else
-					playPane.checkHead(key.getText());
-					
+		scene.setOnKeyTyped(key -> {
+				if(running)
+					playPane.checkHead(key.getCharacter()+"");	
 			}
-			
-					
-		});
+		);
+		
 		primaryStage.setScene(scene);
 		primaryStage.show();
 		
