@@ -9,7 +9,9 @@ public class Word extends TextFlow{
 	private ArrayList<Text> letters;
 	private int headIndex;
 	private float speed;
-	public Word(String value){
+	private String value;
+	public Word(String value_){
+		value = value_;
 		letters = new ArrayList<Text>();
 		headIndex = 0;
 		for(int i = 0; i < value.length(); i++){
@@ -17,8 +19,8 @@ public class Word extends TextFlow{
 		}
 		getChildren().addAll(letters);
 		speed = (float)Math.random();
-		setLayoutX(Math.random()*Constants.WIDTH-getWidth());
-		setLayoutY(Math.random()*Constants.HEIGHT-getHeight());
+		setLayoutX(Math.random()*Constants.WIDTH-getWidth()*2);
+		//setLayoutY(Math.random()*Constants.HEIGHT-getHeight());
 	}
 	
 	public boolean checkHead(String key){
@@ -51,5 +53,6 @@ public class Word extends TextFlow{
 			speed = (float)Math.random();
 		}
 	}
+	public String getValue(){return value;}
 
 }

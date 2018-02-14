@@ -37,6 +37,7 @@ public class TypingGame {
 		
 		
 		
+		
 	}
 
 	private void initPanes(){
@@ -57,7 +58,7 @@ public class TypingGame {
 		Scene scene = new Scene(rootPane, Constants.WIDTH, Constants.HEIGHT);
 		scene.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
 			if(running){
-				System.out.println(key.getText());
+				//System.out.println(key.getText());
 				if(key.getCode() != KeyCode.SHIFT)
 				if(key.isShiftDown()){
 					String text = key.getText();

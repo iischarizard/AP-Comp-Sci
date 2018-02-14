@@ -19,8 +19,35 @@ public class WordList{
 		words = new ArrayList<String>();
 		file = new File(fileName);
 	
+		try{
+			if(!file.exists()) file.createNewFile();
+			
+			fileReader = new FileReader(fileName);
+			bufferedReader = new BufferedReader(fileReader);
+			
+			String entry;
+			while((entry = bufferedReader.readLine()) != null){
+				if(entry.equals(""))
+					break;
+				words.add(entry);
+				
+			}
+			System.out.println(words);
+			
+		}catch(IOException e){
+			e.printStackTrace();
+			
+		}
+	
 	
 	}
 
+	
+	public ArrayList<String> getWords(){
+		return words;
+		
+	}
+	
+	public String getName(){return fileName;}
 
 }
