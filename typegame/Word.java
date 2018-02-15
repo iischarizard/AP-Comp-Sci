@@ -30,11 +30,17 @@ public class Word extends TextFlow{
 			headIndex++;
 			if(headIndex == letters.size())
 				return false;
-		}else{
-			for(Text letter : letters){
+		}else if(letters.get(0).getText().equals(key)){
+			headIndex = 1;
+			for(Text letter : letters)
 				letter.setFill(Color.BLACK);
-				headIndex = 0;
-			}
+			letters.get(0).setFill(Color.GREEN);
+			
+		}else {
+			for(Text letter : letters)
+				letter.setFill(Color.BLACK);
+
+			headIndex = 0;
 		}
 		
 		return true;

@@ -22,6 +22,7 @@ public class TypingGame {
 		this.primaryStage = primaryStage;
 
 		primaryStage.setTitle(Constants.TITLE);
+        primaryStage.setResizable(false);
 		
 		gameLoop = new Timeline(new KeyFrame(Duration.millis(1000/60), ae -> loop()));
 		gameLoop.setCycleCount(Animation.INDEFINITE);
@@ -29,32 +30,16 @@ public class TypingGame {
 		running = false;
 		
 		
-		initPanes();
-		
-		setUpStartingPanes();
-		
-		finishSetup();
-		
-		
-		
-		
-	}
-
-	private void initPanes(){
+		//INIT PANES
 		titlePane = new TitlePane(this);
 		rootPane = new RootPane();
 		playPane = new PlayPane(this);
 		
-	}
-	
-
-	private void setUpStartingPanes(){
+		
 		rootPane.setCenter(titlePane);
-	}
-	
-	
-	private void finishSetup(){
-
+		
+		
+		//FINISH SETUP AND SHOW STAGE
 		Scene scene = new Scene(rootPane, Constants.WIDTH, Constants.HEIGHT);
 		scene.setOnKeyTyped(key -> {
 				if(running)
@@ -65,8 +50,9 @@ public class TypingGame {
 		primaryStage.setScene(scene);
 		primaryStage.show();
 		
+		
 	}
-	
+	//MAIN GAME LOOP
 	private void loop(){
 		playPane.loop();
 	}

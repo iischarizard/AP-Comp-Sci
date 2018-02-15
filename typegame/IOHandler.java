@@ -28,6 +28,26 @@ public class IOHandler{
 		}
 	}
 	
+	public IOHandler(String fileName_, String defaulStringIfNewFile){
+		fileName = fileName_;
+		
+		file = new File(fileName);
+		try{
+			if(!file.exists()){ 
+				file.createNewFile();
+				fileWriter = new FileWriter(fileName);
+				fileWriter.write(defaulStringIfNewFile);
+				fileWriter.close();
+			}
+			
+			fileReader = new FileReader(fileName);
+			bufferedReader = new BufferedReader(fileReader);
+		}catch(IOException e){
+			e.printStackTrace();
+			
+		}
+	}
+	
 	public ArrayList<String> getWordsFromFile(){
 		ArrayList<String> temp = new ArrayList<String>();
 		String entry;
@@ -36,7 +56,7 @@ public class IOHandler{
 			while((entry = bufferedReader.readLine()) != null){
 				if(entry.equals(""))
 					break;
-				temp.add(entry);	
+				temp.add(entry.trim());	
 			}
 		}catch(IOException e){
 			e.printStackTrace();
@@ -45,5 +65,28 @@ public class IOHandler{
 		return temp;
 	
 	}
+	
+	public void writeToFile(String text){
+		try{
+			fileWriter = new FileWriter(fileName);
+			fileWriter.write(text);
+			fileWriter.flush();
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+	}
+	
+	public void appendToFile(String text){
+		try{
+			fileWriter = new FileWriter(fileName, true);
+			fileWriter.write(text);
+			fileWriter.flush();
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+	}
 
+	public void deleteFile(){
+		file.delete();
+	}
 }
