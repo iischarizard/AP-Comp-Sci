@@ -1,9 +1,11 @@
+package word;
 import java.util.ArrayList;
 
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import utils.Constants;
 
 public class Word extends TextFlow{
 	private ArrayList<Text> letters;
@@ -18,7 +20,7 @@ public class Word extends TextFlow{
 			letters.add(makeText(value.charAt(i)));
 		}
 		getChildren().addAll(letters);
-		speed = (float)Math.random();
+		speed = (float)Math.random()*5;
 		setLayoutX(Math.random()*Constants.WIDTH);
 		//setLayoutY(Math.random()*Constants.HEIGHT-getHeight());
 	}
@@ -48,7 +50,7 @@ public class Word extends TextFlow{
 	}
 	private Text makeText(char value){
 		Text text = new Text(value+"");
-		text.setFont(Font.font("Times New Roman", 20));
+		text.setFont(Font.font("Times New Roman", 36));
 		return text;
 		
 	}

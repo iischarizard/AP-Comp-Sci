@@ -1,4 +1,7 @@
+package word;
 import java.util.ArrayList;
+
+import utils.IOHandler;
 
 public class WordList{
 
@@ -31,7 +34,7 @@ public class WordList{
 	public void refreshList(){
 		words = (new IOHandler(fileName)).getWordsFromFile();
 	}
-	
+
 	public String getName(){return fileName;}
 
 }

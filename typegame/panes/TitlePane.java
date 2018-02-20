@@ -1,7 +1,10 @@
+package panes;
 
 import javafx.scene.control.Button;
-import javafx.scene.layout.Pane;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
+import main.TypingGame;
+import utils.Constants;
 
 public class TitlePane extends Pane{
 	
@@ -15,7 +18,7 @@ public class TitlePane extends Pane{
 		Button start = new Button("Start");
 		start.setLayoutX(Constants.WIDTH/2 - start.getWidth()/2);
 		start.setLayoutY(Constants.HEIGHT/2 - start.getHeight()/2);
-		start.setOnAction(ae ->{game.switchToGame();});
+		start.setOnAction(ae ->game.switchToConfigPane());
 		
 		getChildren().addAll(start, title);
 		

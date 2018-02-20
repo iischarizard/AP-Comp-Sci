@@ -1,41 +1,50 @@
+package panes;
 
 import java.util.ArrayList;
-
-
-import javafx.scene.control.*;
-import javafx.scene.Node;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-
-import javafx.scene.layout.Pane;
+import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
+import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
+import main.TypingGame;
+import utils.Constants;
+import utils.IOHandler;
+import word.Word;
+import word.WordList;
 
-public class PlayPane extends Pane {
+
+public class ConfigPane extends Pane {
 	
-	private ArrayList<Word> words;
 	private ArrayList<WordList> lists;
-	private ArrayList<Integer> wordsAppearedIndexList;
 	private ArrayList<Node> mainNodes;
 	private WordList list;
 	
-	private ComboBox wordListsComboBox;
-	private Button start, createNewWordList, save;
-	private Label wordsInList, changesNotSaved;
-	private TextArea wordsList;
+	private final ComboBox<String> wordListsComboBox;
+	private final Button start, createNewWordList, deleteWordList, save;
+	private final Label wordsInList, changesNotSaved;
+	private final TextArea wordsList;
 	
-	public PlayPane(TypingGame game){
-		//setStyle("-fx-background-color: red");
+	private int wordListCount;
+	
+	public ConfigPane(TypingGame game){
+		setStyle("-fx-background-color: #b3edff");
 		//INITIALIZE ARRAYLISTS
-		words = new ArrayList<Word>();
 		lists = new ArrayList<WordList>();
-		wordsAppearedIndexList = new ArrayList<Integer>();
 		mainNodes = new ArrayList<Node>();
 		
 		//ADD WORDLISTS TO ARRAYLIST OF WORDLISTS
 		ArrayList<String> fileNames = (new IOHandler(Constants.WORD_LISTS_FILE_NAME, "Home Keys\nRandom")).getWordsFromFile();
 		for(String fileName : fileNames){
 			lists.add(new WordList(fileName));
+			wordListCount++;
 		}
 		//SET THE CURRENT WORDLIST TO THE FIRST WORDLIST IN THE ARRAYLIST
 		list = lists.get(0);
@@ -52,7 +61,7 @@ public class PlayPane extends Pane {
 		
 		
 		//THE WORD LIST COMBO BOX
-		wordListsComboBox = new ComboBox();
+		wordListsComboBox = new ComboBox<String>();
 		for(WordList wordList : lists)
 			wordListsComboBox.getItems().add(wordList.getName());
 		wordListsComboBox.setValue(list.getName()); 
@@ -157,7 +166,10 @@ public class PlayPane extends Pane {
 				if(fileNameClear && wordsAreaHasText){
 					(new IOHandler(Constants.WORD_LISTS_FILE_NAME)).appendToFile("\n"+fileName.getText());
 					lists.add(new WordList(fileName.getText(), words.getText()));
+					list = lists.get(lists.size()-1);
 					wordListsComboBox.getItems().add(lists.get(lists.size()-1).getName());
+					wordListsComboBox.setValue(wordListsComboBox.getItems().get(wordListsComboBox.getItems().size()-1));
+					wordListCount++;
 					cancel.fire();
 				}
 				
@@ -169,84 +181,75 @@ public class PlayPane extends Pane {
 		
 		});
 		
+		//DELETE CURRENT WORD LIST
+		deleteWordList = new Button("Delete List");
+		deleteWordList.setLayoutX(150);
+		deleteWordList.setOnAction(ae -> {
+			if(wordListCount!=1){
+				Alert alert = new Alert(AlertType.CONFIRMATION);
+				alert.setTitle("Delete "+list.getName());
+				alert.setHeaderText("You are about to delete "+list.getName());
+				alert.setContentText("Are you ok with this?");
+	
+				Optional<ButtonType> result = alert.showAndWait();
+				if (result.get() == ButtonType.OK){
+				    // ... user chose OK
+	
+					IOHandler listFile = new IOHandler(list.getName());
+					IOHandler wordListList = new IOHandler(Constants.WORD_LISTS_FILE_NAME);
+					ArrayList<String> fileNames2 = wordListList.getWordsFromFile();
+					fileNames2.remove(list.getName());
+					String newWordListList = "";
+					for(String name : fileNames2){
+						if(fileNames2.indexOf(name)!=fileNames2.size()-1)
+							newWordListList += name + "\n";
+						else
+							newWordListList += name;
+							
+					}
+					wordListList.writeToFile(newWordListList);
+					wordListsComboBox.getItems().remove(list.getName());
+					list = lists.get(lists.size()-2);
+					lists.remove(list);
+					listFile.deleteFile();
+					wordListCount--;
+					
+				} else {
+				    // ... user chose CANCEL or closed the dialog
+				}
+			}
+			
+		});
 		
 		//START GAME BUTTON
 		start = new Button("Play");
 		start.setLayoutX(Constants.WIDTH/2 - start.getWidth()/2);
 		start.setLayoutY(Constants.HEIGHT/2 - start.getHeight()/2);
 		start.setOnAction(ae -> {
+
 			game.startGameLoop(); 
-			getChildren().removeAll(getChildren());
-			
-			
-			int randomIndex = ThreadLocalRandom.current().nextInt(0, list.getWords().size());
-			for(int i = 0; i < 4; i++){
-				words.add(new Word(list.getWords().get(randomIndex)));
-				wordsAppearedIndexList.add(randomIndex);
-				randomIndex = ThreadLocalRandom.current().nextInt(0, list.getWords().size());
-				while(wordsAppearedIndexList.contains(randomIndex))
-					randomIndex = ThreadLocalRandom.current().nextInt(0, list.getWords().size());
-				
-			}
-		
-			getChildren().addAll(words);
-			
 			
 		});
 		
 		
-		getChildren().addAll(start, wordListsComboBox, createNewWordList, wordsInList, wordsList, save, changesNotSaved);
+		getChildren().addAll(start, wordListsComboBox, createNewWordList, wordsInList, wordsList, save, changesNotSaved, deleteWordList);
 		mainNodes.addAll(getChildren());
 		
 	}
 	
-	
-	public void checkHead(String key){
-		for(Word word : words){
-			if(!word.checkHead(key)){//if false word was typed
-				getChildren().remove(word);
-				words.remove(word);
-				if(wordsAppearedIndexList.size() != list.getWords().size()){
-					int randomIndex = ThreadLocalRandom.current().nextInt(0, list.getWords().size());
-					while(wordsAppearedIndexList.contains(randomIndex))
-						randomIndex = ThreadLocalRandom.current().nextInt(0, list.getWords().size());
-					
-					Word newWord = new Word(list.getWords().get(randomIndex));
-					words.add(newWord);
-					wordsAppearedIndexList.add(randomIndex);
-					getChildren().add(newWord);
-				}
-				if(words.size() != 0)
-					checkHead(key);
-				else
-					finish();
-				break;
-			}
-		}
-	}
 
-	public void loop(){
-		for(Word word : words){
-			word.fall();
-		}
-	}
-	
-	
-	private void finish(){
-		wordsAppearedIndexList.clear();
-		getChildren().addAll(mainNodes);
-		
-	}
 	
 	private void switchWordListTextArea(){
 		wordsList.setText("");
-		for(String word : list.getWords()){
-			wordsList.setText(wordsList.getText() + word);
-			if(list.getWords().lastIndexOf(word)!=list.getWords().size()-1)
+		for(int i = 0; i < list.getWords().size(); i++){
+			wordsList.setText(wordsList.getText() + list.getWords().get(i));
+			if(i < list.getWords().size()-1)
 				wordsList.setText(wordsList.getText() + "\n");
 		}
 		changesNotSaved.setText("");
 		
 	}
+	
+	public WordList getList(){return list;}
 
 }

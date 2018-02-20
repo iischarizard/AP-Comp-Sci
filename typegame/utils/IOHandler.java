@@ -1,8 +1,10 @@
+package utils;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 
 public class IOHandler{
@@ -54,9 +56,8 @@ public class IOHandler{
 		
 		try{
 			while((entry = bufferedReader.readLine()) != null){
-				if(entry.equals(""))
-					break;
-				temp.add(entry.trim());	
+				if(!entry.equals(""))
+					temp.add(entry.trim());	
 			}
 		}catch(IOException e){
 			e.printStackTrace();
@@ -87,6 +88,17 @@ public class IOHandler{
 	}
 
 	public void deleteFile(){
-		file.delete();
+		try {
+			fileWriter = new FileWriter(fileName);
+			fileWriter.close();
+			bufferedReader.close();
+			fileReader.close();
+			System.gc();
+			Files.delete(file.toPath());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 }

@@ -1,26 +1,29 @@
+package main;
 
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import javafx.event.EventHandler;
+import panes.ConfigPane;
+import panes.PlayPane;
+import panes.RootPane;
+import panes.TitlePane;
+import utils.Constants;
 
 public class TypingGame {
 	
-	private Stage primaryStage;
 	private RootPane rootPane;
 	private TitlePane titlePane;	
+	private ConfigPane configPane;
 	private PlayPane playPane;
 	private Timeline gameLoop;
 	private boolean running;
 	
 	public TypingGame(Stage primaryStage){
-		this.primaryStage = primaryStage;
-
 		primaryStage.setTitle(Constants.TITLE);
         primaryStage.setResizable(false);
 		
@@ -33,8 +36,8 @@ public class TypingGame {
 		//INIT PANES
 		titlePane = new TitlePane(this);
 		rootPane = new RootPane();
+		configPane = new ConfigPane(this);
 		playPane = new PlayPane(this);
-		
 		
 		rootPane.setCenter(titlePane);
 		
@@ -57,8 +60,12 @@ public class TypingGame {
 		playPane.loop();
 	}
 	
-	public void switchToGame(){
-		rootPane.setCenter(playPane);
+	private void setMainPane(Pane pane){
+		rootPane.setCenter(pane);
+	}
+	
+	public void switchToConfigPane(){
+		setMainPane(configPane);
 	}
 	
 	public void startGameLoop(){

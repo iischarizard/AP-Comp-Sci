@@ -1,3 +1,4 @@
+package panes;
 
 import javafx.scene.layout.BorderPane;
 
