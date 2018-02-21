@@ -19,7 +19,7 @@ import utils.Constants;
 import utils.IOHandler;
 import word.Word;
 import word.WordList;
-
+import game.*;
 
 public class ConfigPane extends Pane {
 	
@@ -35,7 +35,7 @@ public class ConfigPane extends Pane {
 	private int wordListCount;
 	
 	public ConfigPane(TypingGame game){
-		setStyle("-fx-background-color: #b3edff");
+		//setStyle("-fx-background-color: #b3edff");
 		//INITIALIZE ARRAYLISTS
 		lists = new ArrayList<WordList>();
 		mainNodes = new ArrayList<Node>();
@@ -227,7 +227,7 @@ public class ConfigPane extends Pane {
 		start.setLayoutY(Constants.HEIGHT/2 - start.getHeight()/2);
 		start.setOnAction(ae -> {
 
-			game.startGameLoop(); 
+			game.startGameLoop(new FallingGame(new Config(list))); 
 			
 		});
 		

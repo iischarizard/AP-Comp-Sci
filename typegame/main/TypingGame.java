@@ -12,6 +12,7 @@ import panes.ConfigPane;
 import panes.PlayPane;
 import panes.RootPane;
 import panes.TitlePane;
+import game.*;
 import utils.Constants;
 
 public class TypingGame {
@@ -68,8 +69,10 @@ public class TypingGame {
 		setMainPane(configPane);
 	}
 	
-	public void startGameLoop(){
+	public void startGameLoop(Game game){
 		running = true;
+		playPane.initGame(game);
+		setMainPane(playPane);
 		gameLoop.play();
 	}
 	public void stopGameLoop(){

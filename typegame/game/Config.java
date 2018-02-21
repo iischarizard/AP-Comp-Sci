@@ -17,6 +17,10 @@ public class Config {
 		minimumSpeed = minimumSpeed_;
 		maximumSpeed = maximumSpeed_;
 	}
+	public Config(WordList list_){
+		list = list_;
+	}
+	
 	public boolean isClearProgressOnMistake() {
 		return clearProgressOnMistake;
 	}

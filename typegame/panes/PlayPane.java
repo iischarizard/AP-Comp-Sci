@@ -8,19 +8,20 @@ import javafx.scene.layout.Pane;
 import main.TypingGame;
 import word.Word;
 import word.WordList;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class PlayPane extends Pane{
 	
+	private TypingGame typingGame;
 	private Game game;
 	private WordList list;
 	private ArrayList<Word> words;
 	private ArrayList<Integer> wordsAppearedIndexList;
 	
-	public PlayPane(TypingGame game){
-		
+	public PlayPane(TypingGame typingGame_){
+		typingGame = typingGame_;
 	}
-	
-
 	
 	public void checkHead(String key){
 		for(Word word : words){
@@ -47,22 +48,24 @@ public class PlayPane extends Pane{
 	}
 
 	public void loop(){
-		for(Word word : words){
-			word.fall();
-		}
+		game.loop();
 	}
 	
 	
 	private void finish(){
 		wordsAppearedIndexList.clear();
-		
+		typingGame.switchToConfigPane();
 	}
 	
 	public void initGame(Game game_){
 		game = game_;
-
-		getChildren().removeAll(getChildren());
-	
+		list = game.getList();
+		words = game.getWords();
+		wordsAppearedIndexList = game.getWordsAppearedIndexList();
+        Image image = new Image("assets/Brandon.png");
+        ImageView testerino = new ImageView();
+        testerino.setImage(image);
+        getChildren().add(testerino);
 		getChildren().addAll(words);
 		
 	}

@@ -17,6 +17,7 @@ public abstract class Game {
 		list = config.getList();
 		words = new ArrayList<Word>();
 		wordsAppearedIndexList = new ArrayList<Integer>();
+		setUpWords();
 	}
 	
 	protected abstract void setUpWords();
@@ -31,5 +32,9 @@ public abstract class Game {
 	public void setConfig(Config config) {
 		this.config = config;
 	}
+
+	public WordList getList(){return list;}
+	public ArrayList<Word> getWords(){return words;}
+	public ArrayList<Integer> getWordsAppearedIndexList(){return wordsAppearedIndexList;}
 
 }

@@ -12,8 +12,9 @@ public class FallingGame extends Game {
 	
 	@Override
 	public void loop() {
-		
-
+		for(Word word : words){
+			word.fall();
+		}
 	}
 
 	@Override
