@@ -12,17 +12,23 @@ public class Word extends TextFlow{
 	private int headIndex;
 	private float speed;
 	private String value;
-	public Word(String value_){
+	
+	public Word(String value_, float x, float y){
 		value = value_;
+		init();
+		speed = (float)Math.random()*3;
+		setLayoutX(x);
+		setLayoutY(y);
+	}
+	
+	private void init(){
 		letters = new ArrayList<Text>();
 		headIndex = 0;
 		for(int i = 0; i < value.length(); i++){
 			letters.add(makeText(value.charAt(i)));
 		}
 		getChildren().addAll(letters);
-		speed = (float)Math.random()*5;
-		setLayoutX(Math.random()*Constants.WIDTH);
-		//setLayoutY(Math.random()*Constants.HEIGHT-getHeight());
+		
 	}
 	
 	public boolean checkHead(String key){
@@ -50,7 +56,7 @@ public class Word extends TextFlow{
 	}
 	private Text makeText(char value){
 		Text text = new Text(value+"");
-		text.setFont(Font.font("Times New Roman", 36));
+		text.setFont(Font.font("Times New Roman", Constants.FONT_SIZE));
 		return text;
 		
 	}
@@ -62,5 +68,7 @@ public class Word extends TextFlow{
 		}
 	}
 	public String getValue(){return value;}
+	public void setX(float x){setLayoutX(x);}
+	public void setY(float y){setLayoutY(y);}
 
 }

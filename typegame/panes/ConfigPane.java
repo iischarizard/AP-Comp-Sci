@@ -2,13 +2,15 @@ package panes;
 
 import java.util.ArrayList;
 import java.util.Optional;
-import java.util.concurrent.ThreadLocalRandom;
 
+import game.Config;
+import game.FallingGame;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -17,9 +19,7 @@ import javafx.scene.layout.Pane;
 import main.TypingGame;
 import utils.Constants;
 import utils.IOHandler;
-import word.Word;
 import word.WordList;
-import game.*;
 
 public class ConfigPane extends Pane {
 	
@@ -29,8 +29,12 @@ public class ConfigPane extends Pane {
 	
 	private final ComboBox<String> wordListsComboBox;
 	private final Button start, createNewWordList, deleteWordList, save;
-	private final Label wordsInList, changesNotSaved;
+	private final Label wordsInList, changesNotSaved, 
+						wordRepeatCountLabel, maxWordsOnScreenLabel, minimumSpeedLabel, maximumSpeedLabel, 
+						wordRepeatCountErrorLabel, maxWordsOnScreenErrorLabel, minimumSpeedErrorLabel, maximumSpeedErrorLabel;
 	private final TextArea wordsList;
+	private final CheckBox clearProgressOnMistake;
+	private final TextField wordRepeatCount, maxWordsOnScreen, minimumSpeed, maximumSpeed;
 	
 	private int wordListCount;
 	
@@ -50,7 +54,6 @@ public class ConfigPane extends Pane {
 		list = lists.get(0);
 		
 		
-		//******LABELS**********//
 		//WORDS IN SELECTED LIST LABEL
 		wordsInList = new Label("Words in selected list:");
 		wordsInList.setLayoutY(50);
@@ -59,6 +62,115 @@ public class ConfigPane extends Pane {
 		changesNotSaved = new Label("");
 		changesNotSaved.setLayoutY(65);
 		
+		//WORD REPEAT COUNT LABEL
+		wordRepeatCountLabel = new Label("Number of times words can repeat:");
+		wordRepeatCountLabel.setLayoutX(700);
+		wordRepeatCountLabel.setLayoutY(10);
+		
+		//MAX WORDS ON SCREEN LABEL
+		maxWordsOnScreenLabel = new Label("Maximum words at one time:");
+		maxWordsOnScreenLabel.setLayoutX(700);
+		maxWordsOnScreenLabel.setLayoutY(60);
+		
+		//MINIMUM SPEED LABEL
+		minimumSpeedLabel = new Label("Minimum word speed:");
+		minimumSpeedLabel.setLayoutX(700);
+		minimumSpeedLabel.setLayoutY(110);
+		
+		//MAXIMUM SPEED LABEL
+		maximumSpeedLabel = new Label("Maximum word speed:");
+		maximumSpeedLabel.setLayoutX(700);
+		maximumSpeedLabel.setLayoutY(160);
+		
+		//WORD REPEAT COUNT ERROR LABEL
+		wordRepeatCountErrorLabel = new Label("");
+		wordRepeatCountErrorLabel.setLayoutX(900);
+		wordRepeatCountErrorLabel.setLayoutY(10);
+		
+		//MAX WORDS ON SCREEN ERROR LABEL
+		maxWordsOnScreenErrorLabel = new Label("");
+		maxWordsOnScreenErrorLabel.setLayoutX(900);
+		maxWordsOnScreenErrorLabel.setLayoutY(60);
+		
+		//MINIMUM SPEED ERROR LABEL
+		minimumSpeedErrorLabel = new Label("");
+		minimumSpeedErrorLabel.setLayoutX(900);
+		minimumSpeedErrorLabel.setLayoutY(110);
+		
+		//MAXIMUM SPEED ERROR LABEL
+		maximumSpeedErrorLabel = new Label("Maximum word speed:");
+		maximumSpeedErrorLabel.setLayoutX(900);
+		maximumSpeedErrorLabel.setLayoutY(160);
+		            
+		//WORD REPEAT COUNT TEXT FIELD
+		wordRepeatCount = new TextField("1");
+		wordRepeatCount.setLayoutX(700);
+		wordRepeatCount.setLayoutY(30);
+		wordRepeatCount.textProperty().addListener((observable,  oldValue, newValue) -> {
+			if (!newValue.matches("\\d*")) {
+				wordRepeatCount.setText(newValue.replaceAll("[^\\d]", ""));
+			}
+			
+		}
+		);
+		
+		//MAX WORDS ON SCREEN TEXT FIELD
+		maxWordsOnScreen = new TextField("" + (int)(list.getWords().size()/6));
+		maxWordsOnScreen.setLayoutX(700);
+		maxWordsOnScreen.setLayoutY(80);
+		maxWordsOnScreen.textProperty().addListener((observable,  oldValue, newValue) -> {
+			if (!newValue.matches("\\d*")) {
+				maxWordsOnScreen.setText(newValue.replaceAll("[^\\d]", ""));
+			}
+			
+		}
+		);
+		
+		//MINIMUM AND MAXIMUM SPEED TEXT FIELD
+		minimumSpeed = new TextField("0.2");
+		maximumSpeed = new TextField("3");
+		
+		//MIN
+		minimumSpeed.setLayoutX(700);
+		minimumSpeed.setLayoutY(130);
+		minimumSpeed.textProperty().addListener((observable,  oldValue, newValue) -> {
+			if(!newValue.equals("")){
+				if((""+newValue.charAt(newValue.length()-1)).endsWith(".")){
+					if(oldValue.contains(".")){
+						if(newValue.lastIndexOf(".")!=oldValue.indexOf(".")){
+							minimumSpeed.setText(oldValue);
+						}
+					}
+				}else if (!(""+newValue.charAt(newValue.length()-1)).matches("\\d*")){
+					minimumSpeed.setText(oldValue);
+				}
+			}
+		}
+		);
+		
+		//MAX
+		maximumSpeed.setLayoutX(700);
+		maximumSpeed.setLayoutY(180);
+		maximumSpeed.textProperty().addListener((observable,  oldValue, newValue) -> {
+			if(!newValue.equals("")){
+				if((""+newValue.charAt(newValue.length()-1)).endsWith(".")){
+					if(oldValue.contains(".")){
+						if(newValue.lastIndexOf(".")!=oldValue.indexOf(".")){
+							maximumSpeed.setText(oldValue);
+						}
+					}
+				}else if (!(""+newValue.charAt(newValue.length()-1)).matches("\\d*")){
+					maximumSpeed.setText(oldValue);
+				}
+			}
+		}
+		);
+		
+		//CLEAR WORD PROGRESS ON MISTAKE CHECKBOX
+		clearProgressOnMistake = new CheckBox("Clear word progress on mistake");
+		clearProgressOnMistake.setSelected(true);
+		clearProgressOnMistake.setLayoutX(700);
+		clearProgressOnMistake.setLayoutY(230);
 		
 		//THE WORD LIST COMBO BOX
 		wordListsComboBox = new ComboBox<String>();
@@ -227,17 +339,27 @@ public class ConfigPane extends Pane {
 		start.setLayoutY(Constants.HEIGHT/2 - start.getHeight()/2);
 		start.setOnAction(ae -> {
 
-			game.startGameLoop(new FallingGame(new Config(list))); 
-			
+			if(wordRepeatCount.getText().equals("")||wordRepeatCount.getText().equals("0")){
+				
+			}else if(maxWordsOnScreen.getText().equals("")||Integer.parseInt(maxWordsOnScreen.getText())>list.getWords().size()){
+				
+			}else if(Float.parseFloat(minimumSpeed.getText())>Float.parseFloat(maximumSpeed.getText())){
+				
+			}else{
+				game.startGameLoop(new FallingGame(generateConfig(), game.getPlayPane())); 
+			}
 		});
 		
 		
-		getChildren().addAll(start, wordListsComboBox, createNewWordList, wordsInList, wordsList, save, changesNotSaved, deleteWordList);
+		getChildren().addAll(start, wordListsComboBox, createNewWordList, wordsInList, wordsList, save, changesNotSaved, deleteWordList, clearProgressOnMistake, wordRepeatCount, maxWordsOnScreen, minimumSpeed, maximumSpeed, wordRepeatCountLabel, maxWordsOnScreenLabel, minimumSpeedLabel, maximumSpeedLabel);
 		mainNodes.addAll(getChildren());
 		
 	}
 	
 
+	private Config generateConfig(){
+		return new Config(list, clearProgressOnMistake.isSelected(), Integer.parseInt(wordRepeatCount.getText()), Integer.parseInt(maxWordsOnScreen.getText()), Float.parseFloat(minimumSpeed.getText()), Float.parseFloat(maximumSpeed.getText()));
+	}
 	
 	private void switchWordListTextArea(){
 		wordsList.setText("");

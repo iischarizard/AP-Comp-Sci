@@ -79,6 +79,7 @@ public class TypingGame {
 		running = false;
 		gameLoop.stop();
 	}
+	public PlayPane getPlayPane(){return playPane;}
 	
 	
 }
