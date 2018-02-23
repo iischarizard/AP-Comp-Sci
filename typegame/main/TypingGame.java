@@ -1,18 +1,20 @@
 package main;
 
 
+import game.Game;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import network.Server;
 import panes.ConfigPane;
 import panes.PlayPane;
 import panes.RootPane;
 import panes.TitlePane;
-import game.*;
 import utils.Constants;
 
 public class TypingGame {
@@ -23,6 +25,8 @@ public class TypingGame {
 	private PlayPane playPane;
 	private Timeline gameLoop;
 	private boolean running;
+	private Server server;
+	public Label test;
 	
 	public TypingGame(Stage primaryStage){
 		primaryStage.setTitle(Constants.TITLE);
@@ -33,6 +37,7 @@ public class TypingGame {
 		
 		running = false;
 		
+		server = new Server(this);
 		
 		//INIT PANES
 		titlePane = new TitlePane(this);
@@ -41,11 +46,14 @@ public class TypingGame {
 		playPane = new PlayPane(this);
 		
 		rootPane.setCenter(titlePane);
+		test = new Label("test");
+		titlePane.getChildren().add(test);
 		
 		
 		//FINISH SETUP AND SHOW STAGE
 		Scene scene = new Scene(rootPane, Constants.WIDTH, Constants.HEIGHT);
 		scene.setOnKeyTyped(key -> {
+				server.keyTyped(key);
 				if(running)
 					playPane.checkHead(key.getCharacter()+"");	
 			}
@@ -80,6 +88,10 @@ public class TypingGame {
 		gameLoop.stop();
 	}
 	public PlayPane getPlayPane(){return playPane;}
+	
+	public void close(){
+		server.close();
+	}
 	
 	
 }

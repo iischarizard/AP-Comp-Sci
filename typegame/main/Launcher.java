@@ -5,14 +5,19 @@ import javafx.stage.Stage;
 
 public class Launcher extends Application {
 
+	private TypingGame tg;
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		new TypingGame(primaryStage);
+		tg = new TypingGame(primaryStage);
 	}
 
 	public static void main(String[] args){
 		launch(args);
+	}
+	@Override
+	public void stop(){
+		tg.close();
 	}
 	
 }
