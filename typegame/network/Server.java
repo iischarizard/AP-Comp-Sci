@@ -27,7 +27,7 @@ public class Server implements Runnable{
     private StringBuilder lines;
     private TypingGame game;
     // broadcast and receive of UDP; used for TCP connection(s) to peer(s)
-    private final Broadcasts broadcasts;
+    private /*final*/ Broadcasts broadcasts;
     
     private Thread thread;
     
@@ -38,7 +38,7 @@ public class Server implements Runnable{
         //Platform.runLater(this);
     	
     	thread = new Thread(this);
-    	thread.start();
+    	//thread.start();
         broadcasts = new Broadcasts(this);
     }
 
@@ -118,16 +118,16 @@ public class Server implements Runnable{
                 while (run && s.isConnected()) {
                     try {
                         if (br.ready()){
-                            br.mark(1);
-                            putChar(br.read());
-                            br.reset();
-                            roomData = "";
-                            while((entry = br.readLine())!=null){
+                            //br.mark(1);
+                            //putChar(br.read());
+                            //br.reset();
+                            //roomData = "";
+                            /*while((entry = br.readLine())!=null){
                             	if(entry.equals(roomData)||entry.equals(""))
                             		break;
                             	roomData+=entry;
-                            }
-                            recieveRoom(roomData);
+                            }*/
+                            //recieveRoom(roomData);
                         }
                     } catch (IOException ex) {
                     	ex.printStackTrace();
@@ -144,7 +144,10 @@ public class Server implements Runnable{
         }).start();
     }
     
-
+	public void startThread(){
+		thread.start();
+		broadcasts.start();
+	}
 
     // method called by per-connection thread defined in socketStream
     public void putChar(int ch) {

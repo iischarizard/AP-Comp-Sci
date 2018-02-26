@@ -11,6 +11,8 @@ public class Broadcasts {
 
     private final Runnable receiver;
     private final Runnable sender;
+    private Thread receiverThread;
+    private Thread senderThread;
     private boolean run = true;
 
     public Broadcasts(Server parent) {
@@ -65,10 +67,14 @@ public class Broadcasts {
                 }
             }
         };
-        new Thread(receiver).start();
-        new Thread(sender).start();
+        receiverThread = new Thread(receiver);
+        senderThread = new Thread(sender);
     }
 
+	public void start(){
+		receiverThread.start();
+		senderThread.start();
+	}
     public void quit() {
         run = false;
     }
