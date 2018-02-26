@@ -22,19 +22,18 @@ import utils.IOHandler;
 import word.WordList;
 
 public class ConfigPane extends Pane {
+	protected ArrayList<WordList> lists;
+	protected ArrayList<Node> mainNodes;
+	protected WordList list;
 	
-	private ArrayList<WordList> lists;
-	private ArrayList<Node> mainNodes;
-	private WordList list;
-	
-	private final ComboBox<String> wordListsComboBox;
-	private final Button start, createNewWordList, deleteWordList, save;
-	private final Label wordsInList, changesNotSaved, 
-						wordRepeatCountLabel, maxWordsOnScreenLabel, minimumSpeedLabel, maximumSpeedLabel, 
-						wordRepeatCountErrorLabel, maxWordsOnScreenErrorLabel, minimumSpeedErrorLabel, maximumSpeedErrorLabel;
-	private final TextArea wordsList;
-	private final CheckBox clearProgressOnMistake;
-	private final TextField wordRepeatCount, maxWordsOnScreen, minimumSpeed, maximumSpeed;
+	protected final ComboBox<String> wordListsComboBox;
+	protected final Button start, createNewWordList, deleteWordList, save;
+	protected final Label wordsInList, changesNotSaved, 
+					maxWordsOnScreenLabel, minimumSpeedLabel, maximumSpeedLabel, 
+					maxWordsOnScreenErrorLabel, minimumSpeedErrorLabel;
+	protected final TextArea wordsList;
+	protected final CheckBox clearProgressOnMistake;
+	protected final TextField maxWordsOnScreen, minimumSpeed, maximumSpeed;
 	
 	private int wordListCount;
 	
@@ -62,11 +61,6 @@ public class ConfigPane extends Pane {
 		changesNotSaved = new Label("");
 		changesNotSaved.setLayoutY(65);
 		
-		//WORD REPEAT COUNT LABEL
-		wordRepeatCountLabel = new Label("Number of times words can repeat:");
-		wordRepeatCountLabel.setLayoutX(700);
-		wordRepeatCountLabel.setLayoutY(10);
-		
 		//MAX WORDS ON SCREEN LABEL
 		maxWordsOnScreenLabel = new Label("Maximum words at one time:");
 		maxWordsOnScreenLabel.setLayoutX(700);
@@ -82,37 +76,16 @@ public class ConfigPane extends Pane {
 		maximumSpeedLabel.setLayoutX(700);
 		maximumSpeedLabel.setLayoutY(160);
 		
-		//WORD REPEAT COUNT ERROR LABEL
-		wordRepeatCountErrorLabel = new Label("");
-		wordRepeatCountErrorLabel.setLayoutX(900);
-		wordRepeatCountErrorLabel.setLayoutY(10);
-		
 		//MAX WORDS ON SCREEN ERROR LABEL
 		maxWordsOnScreenErrorLabel = new Label("");
-		maxWordsOnScreenErrorLabel.setLayoutX(900);
-		maxWordsOnScreenErrorLabel.setLayoutY(60);
+		maxWordsOnScreenErrorLabel.setLayoutX(850);
+		maxWordsOnScreenErrorLabel.setLayoutY(80);
 		
 		//MINIMUM SPEED ERROR LABEL
 		minimumSpeedErrorLabel = new Label("");
-		minimumSpeedErrorLabel.setLayoutX(900);
-		minimumSpeedErrorLabel.setLayoutY(110);
+		minimumSpeedErrorLabel.setLayoutX(850);
+		minimumSpeedErrorLabel.setLayoutY(130);
 		
-		//MAXIMUM SPEED ERROR LABEL
-		maximumSpeedErrorLabel = new Label("Maximum word speed:");
-		maximumSpeedErrorLabel.setLayoutX(900);
-		maximumSpeedErrorLabel.setLayoutY(160);
-		            
-		//WORD REPEAT COUNT TEXT FIELD
-		wordRepeatCount = new TextField("1");
-		wordRepeatCount.setLayoutX(700);
-		wordRepeatCount.setLayoutY(30);
-		wordRepeatCount.textProperty().addListener((observable,  oldValue, newValue) -> {
-			if (!newValue.matches("\\d*")) {
-				wordRepeatCount.setText(newValue.replaceAll("[^\\d]", ""));
-			}
-			
-		}
-		);
 		
 		//MAX WORDS ON SCREEN TEXT FIELD
 		maxWordsOnScreen = new TextField("" + (int)(list.getWords().size()/6));
@@ -128,7 +101,6 @@ public class ConfigPane extends Pane {
 		
 		//MINIMUM AND MAXIMUM SPEED TEXT FIELD
 		minimumSpeed = new TextField("0.2");
-		maximumSpeed = new TextField("3");
 		
 		//MIN
 		minimumSpeed.setLayoutX(700);
@@ -149,6 +121,7 @@ public class ConfigPane extends Pane {
 		);
 		
 		//MAX
+		maximumSpeed = new TextField("3");
 		maximumSpeed.setLayoutX(700);
 		maximumSpeed.setLayoutY(180);
 		maximumSpeed.textProperty().addListener((observable,  oldValue, newValue) -> {
@@ -334,31 +307,31 @@ public class ConfigPane extends Pane {
 		});
 		
 		//START GAME BUTTON
-		start = new Button("Play");
+		start = new Button("Play Falling Game");
 		start.setLayoutX(Constants.WIDTH/2 - start.getWidth()/2);
 		start.setLayoutY(Constants.HEIGHT/2 - start.getHeight()/2);
 		start.setOnAction(ae -> {
 
-			if(wordRepeatCount.getText().equals("")||wordRepeatCount.getText().equals("0")){
-				
-			}else if(maxWordsOnScreen.getText().equals("")||Integer.parseInt(maxWordsOnScreen.getText())>list.getWords().size()){
-				
-			}else if(Float.parseFloat(minimumSpeed.getText())>Float.parseFloat(maximumSpeed.getText())){
-				
-			}else{
-				game.startGameLoop(new FallingGame(generateConfig(), game.getPlayPane())); 
+			if(maxWordsOnScreen.getText().equals("")||Integer.parseInt(maxWordsOnScreen.getText())>list.getWords().size()){
+				maxWordsOnScreenErrorLabel.setText("Too many words!!");
 			}
+			if(Float.parseFloat(minimumSpeed.getText())>Float.parseFloat(maximumSpeed.getText())){
+				minimumSpeedErrorLabel.setText("Minimum cannot be greater than maximum!");
+			}
+			if(!maxWordsOnScreen.getText().equals("")&&Integer.parseInt(maxWordsOnScreen.getText())<=list.getWords().size()&&Float.parseFloat(minimumSpeed.getText())<=Float.parseFloat(maximumSpeed.getText()))
+				game.startGameLoop(new FallingGame(generateConfig(), game.getPlayPane())); 
+			
 		});
 		
 		
-		getChildren().addAll(start, wordListsComboBox, createNewWordList, wordsInList, wordsList, save, changesNotSaved, deleteWordList, clearProgressOnMistake, wordRepeatCount, maxWordsOnScreen, minimumSpeed, maximumSpeed, wordRepeatCountLabel, maxWordsOnScreenLabel, minimumSpeedLabel, maximumSpeedLabel);
+		getChildren().addAll(start, wordListsComboBox, createNewWordList, wordsInList, wordsList, save, changesNotSaved, deleteWordList, clearProgressOnMistake, maxWordsOnScreen, minimumSpeed, maximumSpeed, maxWordsOnScreenLabel, minimumSpeedLabel, maximumSpeedLabel, maxWordsOnScreenErrorLabel, minimumSpeedErrorLabel);
 		mainNodes.addAll(getChildren());
 		
 	}
 	
 
-	private Config generateConfig(){
-		return new Config(list, clearProgressOnMistake.isSelected(), Integer.parseInt(wordRepeatCount.getText()), Integer.parseInt(maxWordsOnScreen.getText()), Float.parseFloat(minimumSpeed.getText()), Float.parseFloat(maximumSpeed.getText()));
+	protected Config generateConfig(){
+		return new Config(list, clearProgressOnMistake.isSelected(), Integer.parseInt(maxWordsOnScreen.getText()), Float.parseFloat(minimumSpeed.getText()), Float.parseFloat(maximumSpeed.getText()));
 	}
 	
 	private void switchWordListTextArea(){

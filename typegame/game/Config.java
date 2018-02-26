@@ -5,14 +5,13 @@ import word.WordList;
 public class Config {
 
 	private boolean clearProgressOnMistake;
-	private int wordRepeatCount, maxWordsOnScreen;
+	private int maxWordsOnScreen;
 	private float minimumSpeed, maximumSpeed;
 	private WordList list;
 	
-	public Config(WordList list_, boolean clearProgressOnMistake_, int wordRepeatCount_, int maxWordsOnScreen_, float minimumSpeed_, float maximumSpeed_){
+	public Config(WordList list_, boolean clearProgressOnMistake_, int maxWordsOnScreen_, float minimumSpeed_, float maximumSpeed_){
 		list = list_;
 		clearProgressOnMistake = clearProgressOnMistake_;
-		wordRepeatCount = wordRepeatCount_;
 		maxWordsOnScreen = maxWordsOnScreen_;
 		minimumSpeed = minimumSpeed_;
 		maximumSpeed = maximumSpeed_;
@@ -29,13 +28,6 @@ public class Config {
 		this.clearProgressOnMistake = clearProgressOnMistake;
 	}
 
-	public int getWordRepeatCount() {
-		return wordRepeatCount;
-	}
-
-	public void setWordRepeatCount(int wordRepeatCount) {
-		this.wordRepeatCount = wordRepeatCount;
-	}
 
 	public int getMaxWordsOnScreen() {
 		return maxWordsOnScreen;

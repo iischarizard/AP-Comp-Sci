@@ -9,7 +9,7 @@ import word.WordList;
 
 public abstract class Game {
 	
-	private Config config;
+	protected Config config;
 	protected WordList list;
 	protected ArrayList<Word> words;
 	protected ArrayList<Integer> wordsAppearedIndexList;

@@ -4,16 +4,17 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import entity.Dude;
 import entity.Entity;
+import network.Server;
 import panes.PlayPane;
 import utils.Constants;
 import word.Word;
 
-public class FallingGame extends Game {
-
+public class FallingGameMultiplayer extends GameMultiplayer{
+	
 	private Dude dude;
 	
-	public FallingGame(Config config, PlayPane parentPane){
-		super(config, parentPane);
+	public FallingGameMultiplayer(Config config, PlayPane parentPane, Server server){
+		super(config, parentPane, server);
 		dude = new Dude(0, 0);
 		dude.setLayoutY(Constants.HEIGHT-dude.getFitHeight());
 		//entities.add(dude);
@@ -37,11 +38,9 @@ public class FallingGame extends Game {
 			String wordString = list.getWords().get(randomIndex);
 			words.add(new Word(wordString, ThreadLocalRandom.current().nextInt(0, Constants.WIDTH-(wordString.length()*Constants.FONT_SIZE)), 0, config.getMinimumSpeed(), config.getMaximumSpeed()));
 			wordsAppearedIndexList.add(randomIndex);
-			if(i!=list.getWords().size()-1){
+			randomIndex = ThreadLocalRandom.current().nextInt(0, list.getWords().size());
+			while(wordsAppearedIndexList.contains(randomIndex))
 				randomIndex = ThreadLocalRandom.current().nextInt(0, list.getWords().size());
-				while(wordsAppearedIndexList.contains(randomIndex))
-					randomIndex = ThreadLocalRandom.current().nextInt(0, list.getWords().size());
-			}
 			
 		}
 	}
@@ -72,5 +71,6 @@ public class FallingGame extends Game {
 			}
 		}
 	}
+	
 
 }

@@ -36,5 +36,14 @@ public class WordList{
 	}
 
 	public String getName(){return fileName;}
+	
+	@Override
+	public String toString(){
+		String string = "";
+		for(String word : words){
+			string += word+"~^~";
+		}
+		return string;
+	}
 
 }

@@ -15,12 +15,17 @@ public class TitlePane extends Pane{
 		title.setLayoutX(Constants.WIDTH/2-20);
 		title.setLayoutY(10);
 		
-		Button start = new Button("Start");
-		start.setLayoutX(Constants.WIDTH/2 - start.getWidth()/2);
-		start.setLayoutY(Constants.HEIGHT/2 - start.getHeight()/2);
-		start.setOnAction(ae ->game.switchToConfigPane());
+		Button singlePlayer = new Button("Single Player");
+		singlePlayer.setLayoutX(Constants.WIDTH/2 - singlePlayer.getWidth()/2-100);
+		singlePlayer.setLayoutY(Constants.HEIGHT/2 - singlePlayer.getHeight()/2);
+		singlePlayer.setOnAction(ae ->game.singlePlayer());
 		
-		getChildren().addAll(start, title);
+		Button multiplayer = new Button("Multiplayer");
+		multiplayer.setLayoutX(Constants.WIDTH/2 - multiplayer.getWidth()/2+100);
+		multiplayer.setLayoutY(Constants.HEIGHT/2 - multiplayer.getHeight()/2);
+		multiplayer.setOnAction(ae ->game.multiPlayer());
+		
+		getChildren().addAll(singlePlayer, multiplayer, title);
 		
 	}
 	
