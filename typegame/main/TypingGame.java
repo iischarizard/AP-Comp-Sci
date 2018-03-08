@@ -93,12 +93,18 @@ public class TypingGame {
 	
 	public void createRoom(String name){
 		setMainPane(new CreateRoomPane(this, name));
-		server.startThread();
+		if(!server.isRunning()){
+			server.setRun(true);
+			server.startThread();
+		}
 	}
 	
 	public void joinRoom(String name){
 		setMainPane(new JoinRoomPane(this, name));
-		server.startThread();
+		if(!server.isRunning()){
+			server.setRun(true);
+			server.startThread();
+		}
 	}
 	
 	public void startGameLoop(Game game){
@@ -111,6 +117,8 @@ public class TypingGame {
 		running = false;
 		gameLoop.stop();
 	}
+	
+	
 	public PlayPane getPlayPane(){return playPane;}
 	
 	public void close(){

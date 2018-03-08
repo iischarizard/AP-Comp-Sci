@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 import game.Config;
-import game.FallingGame;
+import game.FallingGameSinglePlayer;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -30,7 +30,7 @@ public class ConfigPane extends Pane {
 	protected final Button start, createNewWordList, deleteWordList, save;
 	protected final Label wordsInList, changesNotSaved, 
 					maxWordsOnScreenLabel, minimumSpeedLabel, maximumSpeedLabel, 
-					maxWordsOnScreenErrorLabel, minimumSpeedErrorLabel;
+					maxWordsOnScreenErrorLabel, minimumSpeedErrorLabel, maximumSpeedErrorLabel;
 	protected final TextArea wordsList;
 	protected final CheckBox clearProgressOnMistake;
 	protected final TextField maxWordsOnScreen, minimumSpeed, maximumSpeed;
@@ -85,6 +85,10 @@ public class ConfigPane extends Pane {
 		minimumSpeedErrorLabel = new Label("");
 		minimumSpeedErrorLabel.setLayoutX(850);
 		minimumSpeedErrorLabel.setLayoutY(130);
+		
+		maximumSpeedErrorLabel = new Label("");
+		maximumSpeedErrorLabel.setLayoutX(850);
+		maximumSpeedErrorLabel.setLayoutY(180);
 		
 		
 		//MAX WORDS ON SCREEN TEXT FIELD
@@ -314,17 +318,34 @@ public class ConfigPane extends Pane {
 
 			if(maxWordsOnScreen.getText().equals("")||Integer.parseInt(maxWordsOnScreen.getText())>list.getWords().size()){
 				maxWordsOnScreenErrorLabel.setText("Too many words!!");
+			}else{
+				maxWordsOnScreenErrorLabel.setText("");
 			}
-			if(Float.parseFloat(minimumSpeed.getText())>Float.parseFloat(maximumSpeed.getText())){
-				minimumSpeedErrorLabel.setText("Minimum cannot be greater than maximum!");
+			boolean test = true;
+			if(minimumSpeed.getText().equals("")){
+				minimumSpeedErrorLabel.setText("You must input a value for the minimum speed.");
+				test = false;
+			}else{
+				minimumSpeedErrorLabel.setText("");
 			}
-			if(!maxWordsOnScreen.getText().equals("")&&Integer.parseInt(maxWordsOnScreen.getText())<=list.getWords().size()&&Float.parseFloat(minimumSpeed.getText())<=Float.parseFloat(maximumSpeed.getText()))
-				game.startGameLoop(new FallingGame(generateConfig(), game.getPlayPane())); 
+			if(maximumSpeed.getText().equals("")||maximumSpeed.getText().equals("0")){
+				maximumSpeedErrorLabel.setText("You must input a value greater than 0 for the maximum speed.");
+				test = false;
+			}else{
+				maximumSpeedErrorLabel.setText("");
+			}
+			if(test){
+				if(Float.parseFloat(minimumSpeed.getText())>Float.parseFloat(maximumSpeed.getText())){
+					minimumSpeedErrorLabel.setText("Minimum cannot be greater than maximum!");
+				}
+				if(!maxWordsOnScreen.getText().equals("")&&Integer.parseInt(maxWordsOnScreen.getText())<=list.getWords().size()&&Float.parseFloat(minimumSpeed.getText())<=Float.parseFloat(maximumSpeed.getText()))
+					game.startGameLoop(new FallingGameSinglePlayer(generateConfig(), game.getPlayPane())); 
+			}
 			
 		});
 		
 		
-		getChildren().addAll(start, wordListsComboBox, createNewWordList, wordsInList, wordsList, save, changesNotSaved, deleteWordList, clearProgressOnMistake, maxWordsOnScreen, minimumSpeed, maximumSpeed, maxWordsOnScreenLabel, minimumSpeedLabel, maximumSpeedLabel, maxWordsOnScreenErrorLabel, minimumSpeedErrorLabel);
+		getChildren().addAll(start, wordListsComboBox, createNewWordList, wordsInList, wordsList, save, changesNotSaved, deleteWordList, clearProgressOnMistake, maxWordsOnScreen, minimumSpeed, maximumSpeed, maxWordsOnScreenLabel, minimumSpeedLabel, maximumSpeedLabel, maxWordsOnScreenErrorLabel, minimumSpeedErrorLabel, maximumSpeedErrorLabel);
 		mainNodes.addAll(getChildren());
 		
 	}

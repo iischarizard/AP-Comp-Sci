@@ -1,6 +1,7 @@
 package panes.multiplayer;
 
 
+import game.FallingGameMultiplayer;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -17,15 +18,18 @@ import utils.Constants;
 
 public class JoinRoomPane extends Pane{
 	
-	public JoinRoomPane(TypingGame game, String username){
+	private TypingGame game;
+	
+	public JoinRoomPane(TypingGame game_, String username){
+		game = game_;
 		VBox rooms = new VBox();
 		rooms.setStyle("-fx-border-color: black");
 		rooms.setPrefHeight(Constants.HEIGHT);
 		rooms.setPrefWidth(300);
-		//game.getServer().setReceivingRoom(true);
+		game.getServer().setReceivingRooms(true);
 
 		Timeline timeline = new Timeline();
-		timeline.getKeyFrames().add(new KeyFrame(Duration.millis(1000/10), new EventHandler<ActionEvent>(){
+		timeline.getKeyFrames().add(new KeyFrame(Duration.millis(1000/3), new EventHandler<ActionEvent>(){
 			String[] roomData;
 			
 			@Override
@@ -46,12 +50,36 @@ public class JoinRoomPane extends Pane{
 		getChildren().addAll(rooms);
 	}
 	
+	public void goToWaitingRoom(String[] roomData){
+		getChildren().clear();
+		Button ready = new Button("Ready");
+		Timeline timeline = new Timeline();
+		timeline.getKeyFrames().add(new KeyFrame(Duration.millis(1000/3), new EventHandler<ActionEvent>(){
+			
+			@Override
+			public void handle(ActionEvent ae){
+				game.getServer().broadcastReady(roomData[0]);
+				if(game.getServer().isInGame()){
+					timeline.stop();
+					game.getServer().setInGame(true);
+					game.startGameLoop(new FallingGameMultiplayer(roomData, game.getPlayPane(), game.getServer()));
+				}
+			}
+		}));
+		ready.setOnAction(ae -> {
+			timeline.play();
+		});
+		getChildren().addAll(ready);
+	}
+	
 	private class Room extends HBox{
 		public Room(String[] roomData, Timeline timeline){
 			Label name = new Label(roomData[0]);
 			Button join = new Button("Join");
 			join.setOnAction(ae -> {
 				timeline.stop();
+				game.getServer().setReceivingRooms(false);
+				goToWaitingRoom(roomData);
 			});
 			
 			getChildren().addAll(name, join);

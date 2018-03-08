@@ -23,13 +23,17 @@ public class Server implements Runnable{
 	
 
     private final ArrayList<Socket> sockets;
-    private boolean run = true;
+    private boolean run = false;
     private StringBuilder lines;
     private TypingGame game;
     // broadcast and receive of UDP; used for TCP connection(s) to peer(s)
-    private /*final*/ Broadcasts broadcasts;
+    private final Broadcasts broadcasts;
+    
+    private boolean inGame = false, broadcastingRoom = false, receivingRooms = false, waitingForOtherPlayerReady = false;
+    
     
     private Thread thread;
+    public boolean isRunning(){return run;}
     
     public Server(TypingGame game_){
     	game = game_;
@@ -43,33 +47,76 @@ public class Server implements Runnable{
     }
 
     public void keyTyped(KeyEvent e){
-        synchronized (sockets) {
-            List<Socket> toRemove = new LinkedList<>();
-
-            for (Socket s : sockets) {
-                try {
-                    PrintWriter pw = new PrintWriter(s.getOutputStream());
-                    pw.print(e.getCharacter());
-                    pw.flush();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                    toRemove.add(s);
-                }
-            }
-
-            sockets.removeAll(toRemove);
-        }
+    	if(inGame){
+	        synchronized (sockets) {
+	            List<Socket> toRemove = new LinkedList<>();
+	
+	            for (Socket s : sockets) {
+	                try {
+	                    PrintWriter pw = new PrintWriter(s.getOutputStream());
+	                    pw.print(e.getCharacter());
+	                    pw.flush();
+	                } catch (IOException ex) {
+	                    ex.printStackTrace();
+	                    toRemove.add(s);
+	                }
+	            }
+	
+	            sockets.removeAll(toRemove);
+	        }
+    	}
     	
     }
     
     public void broadcastRoom(String roomName, Config config, WordList list){
+    	if(broadcastingRoom){
+	    	synchronized (sockets) {
+	            List<Socket> toRemove = new LinkedList<>();
+	
+	            for (Socket s : sockets) {
+	                try {
+	                    PrintWriter pw = new PrintWriter(s.getOutputStream());
+	                    pw.print(roomName + "~:~" + config.getMaxWordsOnScreen() + "~:~" + config.getMinimumSpeed()+"~:~"+ config.getMaximumSpeed()+"~:~"+ config.isClearProgressOnMistake()+"~:~"+list.toString()+"~-~\n");
+	                    pw.flush();
+	                } catch (IOException ex) {
+	                    ex.printStackTrace();
+	                    toRemove.add(s);
+	                }
+	            }
+	
+	            sockets.removeAll(toRemove);
+	        }
+    	}
+    }
+    
+    private boolean otherPlayerReady = false;
+    
+    private String roomData = "";
+    private String roomName = "";
+    
+    public boolean isOtherPlayerReady(){return otherPlayerReady;}
+    public void setRoomName(String roomName_){roomName = roomName_;}
+    
+    public void recieveRoom(String roomData_){
+    	System.out.println(roomData_);
+
+        synchronized (game) {
+        	roomData = roomData_;
+        }
+    }
+    
+    public String getRoomData(){
+    	return roomData;
+    }
+    
+    public void broadcastReady(String roomName){
     	synchronized (sockets) {
             List<Socket> toRemove = new LinkedList<>();
 
             for (Socket s : sockets) {
                 try {
                     PrintWriter pw = new PrintWriter(s.getOutputStream());
-                    pw.print(roomName + "~:~" + config.getMaxWordsOnScreen() + "~:~" + config.getMinimumSpeed()+"~:~"+ config.getMaximumSpeed()+"~:~"+ config.isClearProgressOnMistake()+"~:~"+list.toString()+"~-~\n");
+                    pw.print("~()READY()~"+roomName+"~()READY()~");
                     pw.flush();
                 } catch (IOException ex) {
                     ex.printStackTrace();
@@ -79,28 +126,6 @@ public class Server implements Runnable{
 
             sockets.removeAll(toRemove);
         }
-    }
-    
-    private String roomData = "";
-    
-    public void recieveRoom(String roomData_){
-    	System.out.println(roomData_+"asdf");
-
-        synchronized (game) {
-        	roomData = roomData_;
-	        /*Platform.runLater(new Runnable() {
-	            @Override public void run() {
-	            	//game.test.setText(String.valueOf((char)ch));
-	            	game.test.setText(lines.toString() + '.');
-	                // etc
-	            }
-	        });*/
-            //textArea.setText(lines.toString() + '.');
-        }
-    }
-    
-    public String getRoomData(){
-    	return roomData;
     }
     
     private void socketStream(final Socket s) {
@@ -121,13 +146,25 @@ public class Server implements Runnable{
                             //br.mark(1);
                             //putChar(br.read());
                             //br.reset();
-                            //roomData = "";
-                            /*while((entry = br.readLine())!=null){
-                            	if(entry.equals(roomData)||entry.equals(""))
-                            		break;
-                            	roomData+=entry;
-                            }*/
-                            //recieveRoom(roomData);
+                            roomData = "";
+                        	if(inGame){
+                        		putChar(br.read());
+                        	}else if(waitingForOtherPlayerReady){
+	                            while(waitingForOtherPlayerReady&&(entry = br.readLine())!=null){
+	                            	if(entry.equals("~()READY()~"+roomName+"~()READY()~")){
+	                            		otherPlayerReady = true;
+	                            		break;
+	                            	}
+	                            }
+                            } else if(receivingRooms){
+	                            while(receivingRooms&&(entry = br.readLine())!=null){
+	                            	if(entry.equals(""))
+	                            		break;
+	                            	if(!roomData.contains(entry))
+	                            		roomData+=entry;
+	                                recieveRoom(roomData);
+	                            }
+                            }
                         }
                     } catch (IOException ex) {
                     	ex.printStackTrace();
@@ -227,6 +264,42 @@ public class Server implements Runnable{
 	    }
 		
 	}
+
+	public void setRun(boolean run_){run = run_;}
+	
+	public boolean isInGame() {
+		return inGame;
+	}
+
+	public void setInGame(boolean inGame) {
+		this.inGame = inGame;
+	}
+
+	public boolean isBroadcastingRoom() {
+		return broadcastingRoom;
+	}
+
+	public void setBroadcastingRoom(boolean broadcastingRoom) {
+		this.broadcastingRoom = broadcastingRoom;
+	}
+
+	public boolean isReceivingRooms() {
+		return receivingRooms;
+	}
+
+	public void setReceivingRooms(boolean receivingRooms) {
+		this.receivingRooms = receivingRooms;
+	}
+
+	public boolean isWaitingForOtherPlayerReady() {
+		return waitingForOtherPlayerReady;
+	}
+
+	public void setWaitingForOtherPlayerReady(boolean waitingForOtherPlayerReady) {
+		this.waitingForOtherPlayerReady = waitingForOtherPlayerReady;
+	}
     
+	
+	
 	
 }

@@ -20,7 +20,13 @@ public class WordList{
 		
 		words = (new IOHandler(fileName, wordsString)).getWordsFromFile();
 	
+	}
 	
+	public WordList(String[] words_){
+		words = new ArrayList<String>();
+		for(int i = 0; i < words_.length; i++){
+			words.add(words_[i]);
+		}
 	}
 	
 	public ArrayList<String> getWords(){

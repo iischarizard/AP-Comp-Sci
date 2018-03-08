@@ -15,6 +15,7 @@ import panes.ConfigPane;
 import utils.Constants;
 
 public class CreateRoomPane extends ConfigPane{
+	private boolean otherPlayerReady = false;
 	
 	public CreateRoomPane(TypingGame game, String username){
 		super(game);
@@ -39,13 +40,14 @@ public class CreateRoomPane extends ConfigPane{
 				//game.startGameLoop(new FallingGame(generateConfig(), game.getPlayPane()));
 				
 				getChildren().clear();
-				boolean otherPlayerReady = false;
-
-				Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1000/5), new EventHandler<ActionEvent>(){
+				game.getServer().setBroadcastingRoom(true);
+				game.getServer().setRoomName(roomName.getText());
+				Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1000/3), new EventHandler<ActionEvent>(){
 
 					@Override
 					public void handle(ActionEvent ae) {
 						game.getServer().broadcastRoom(roomName.getText(), generateConfig(), list);
+						otherPlayerReady = game.getServer().isOtherPlayerReady();
 					}
 					
 				}));
@@ -58,6 +60,8 @@ public class CreateRoomPane extends ConfigPane{
 				play.setOnAction(ae -> {
 					if(otherPlayerReady){
 						timeline.stop();
+						game.getServer().setBroadcastingRoom(false);
+						game.getServer().setInGame(true);
 						game.startGameLoop(new FallingGameMultiplayer(generateConfig(), game.getPlayPane(), game.getServer()));
 					}
 					

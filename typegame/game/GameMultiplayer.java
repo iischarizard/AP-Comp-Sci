@@ -17,7 +17,10 @@ public abstract class GameMultiplayer extends Game{
 	public GameMultiplayer(Config config_, PlayPane parentPane_, Server server_){
 		super(config_, parentPane_);
 		server = server_;
-		
+	}
+	public GameMultiplayer(String[] roomData, PlayPane parentPane_, Server server_){
+		super(new Config(roomData), parentPane_);
+		server = server_;
 	}
 
 	public ArrayList<Word> getWordsPlayer2() {

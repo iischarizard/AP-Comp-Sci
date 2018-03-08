@@ -16,8 +16,17 @@ public class Config {
 		minimumSpeed = minimumSpeed_;
 		maximumSpeed = maximumSpeed_;
 	}
-	public Config(WordList list_){
-		list = list_;
+	public Config(String[] roomData){
+		maxWordsOnScreen = Integer.parseInt(roomData[1]);
+		minimumSpeed = Float.parseFloat(roomData[2]);
+		maximumSpeed = Float.parseFloat(roomData[3]);
+		if(roomData[4].equals("true")){
+			clearProgressOnMistake = true;
+		}else{
+			clearProgressOnMistake = false;
+		}
+		list = new WordList(roomData[4].split("~^~"));
+		
 	}
 	
 	public boolean isClearProgressOnMistake() {

@@ -28,6 +28,21 @@ public abstract class Entity extends ImageView{
         setCache(true);
 	}
 	
+	public Entity(float x_, float y_, String... imagePaths_){
+		imagePaths = imagePaths_;
+		
+		images = new ArrayList<Image>();
+		imageIndex = 0;
+		for(int i = 0; i < imagePaths.length; i++)
+			images.add(new Image(imagePaths[i]));
+		setImage(images.get(imageIndex));
+		setLayoutX(x_);
+		setLayoutY(y_);
+        setPreserveRatio(true);
+        setSmooth(true);
+        setCache(true);
+	}
+	
 	public void nextImage(){
 		imageIndex++;
 		if(imageIndex==images.size())
