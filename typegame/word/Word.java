@@ -39,33 +39,6 @@ public class Word extends Pane{
 		
 	}
 	
-	/*public boolean checkHead(String key, boolean clearProgressOnMistake){
-		//System.out.println(letters.get(headIndex).getText() + " : " + key);
-		if(letters.get(headIndex).getText().equals(key)){
-			letters.get(headIndex).setFill(Color.FORESTGREEN);
-			headIndex++;
-			if(headIndex == letters.size())
-				return false;
-		}else if(clearProgressOnMistake){
-			for(Text letter : letters)
-				letter.setFill(Color.BLACK);
-
-			headIndex = 0;
-			if(letters.get(0).getText().equals(key)){
-				headIndex = 1;
-				for(Text letter : letters)
-					letter.setFill(Color.BLACK);
-				letters.get(0).setFill(Color.FORESTGREEN);
-				
-			}
-		}else{
-			letters.get(headIndex).setFill(Color.RED);
-			
-		}
-		
-		return true;
-		
-	}*/
 	private Text makeText(char value){
 		Text text = new Text(value+"");
 		text.setFont(Font.font("Times New Roman", Constants.FONT_SIZE));

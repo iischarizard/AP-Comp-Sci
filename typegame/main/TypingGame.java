@@ -8,12 +8,12 @@ import javafx.animation.Timeline;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import network.Server;
 import panes.ConfigPane;
 import panes.PlayPane;
-import panes.RootPane;
 import panes.TitlePane;
 import panes.multiplayer.CreateRoomPane;
 import panes.multiplayer.JoinRoomPane;
@@ -22,7 +22,7 @@ import utils.Constants;
 
 public class TypingGame {
 	
-	private RootPane rootPane;
+	private BorderPane rootPane;
 	private TitlePane titlePane;	
 	private ConfigPane configPane;
 	private PlayPane playPane;
@@ -45,7 +45,7 @@ public class TypingGame {
 		
 		//INIT PANES
 		titlePane = new TitlePane(this);
-		rootPane = new RootPane();
+		rootPane = new BorderPane();
 		configPane = new ConfigPane(this);
 		playPane = new PlayPane(this);
 		//multiplayerPane = new MultiplayerPane(this);
