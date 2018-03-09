@@ -3,7 +3,6 @@ package game;
 import java.util.concurrent.ThreadLocalRandom;
 
 import entity.Background;
-import entity.Dude;
 import entity.Entity;
 import network.Server;
 import panes.PlayPane;
@@ -12,22 +11,19 @@ import word.Word;
 
 public class FallingGameMultiplayer extends GameMultiplayer{
 	
-	private Dude dude;
 	
 	public FallingGameMultiplayer(Config config, PlayPane parentPane, Server server){
 		super(config, parentPane, server);
-		dude = new Dude(0, 0);
-		dude.setLayoutY(Constants.HEIGHT-dude.getFitHeight());
 		entities.add(new Background());
-		//entities.add(dude);
 	}
 	
 	public FallingGameMultiplayer(String[] roomData, PlayPane parentPane, Server server){
 		super(roomData, parentPane, server);
-		dude = new Dude(0, 0);
-		dude.setLayoutY(Constants.HEIGHT-dude.getFitHeight());
 		entities.add(new Background());
-		//entities.add(dude);
+	}
+	protected void setUpHUDPanes() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	@Override
@@ -86,6 +82,12 @@ public class FallingGameMultiplayer extends GameMultiplayer{
 				break;
 			}
 		}
+	}
+
+	@Override
+	protected void setUpGameOverPanes() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	

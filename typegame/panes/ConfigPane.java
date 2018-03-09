@@ -316,8 +316,8 @@ public class ConfigPane extends Pane {
 		start.setLayoutY(Constants.HEIGHT/2 - start.getHeight()/2);
 		start.setOnAction(ae -> {
 
-			if(maxWordsOnScreen.getText().equals("")||Integer.parseInt(maxWordsOnScreen.getText())>list.getWords().size()){
-				maxWordsOnScreenErrorLabel.setText("Too many words!!");
+			if(maxWordsOnScreen.getText().equals("")||Integer.parseInt(maxWordsOnScreen.getText())>list.getWords().size()||Integer.parseInt(maxWordsOnScreen.getText())<=0){
+				maxWordsOnScreenErrorLabel.setText("You must input a valid number less than the number of words in the list.");
 			}else{
 				maxWordsOnScreenErrorLabel.setText("");
 			}

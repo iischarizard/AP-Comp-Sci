@@ -8,8 +8,8 @@ public class Background extends Entity {
 	}
 
 	@Override
-	public void loop() {
-		// TODO Auto-generated method stub
+	public boolean loop() {
+		return true;
 
 	}
 
