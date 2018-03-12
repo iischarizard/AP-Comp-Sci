@@ -57,7 +57,7 @@ public class FallingGameMultiplayer extends GameMultiplayer{
 	
 	private void init(){
 		score = 0; 
-		scorePlayer2 = 3;
+		scorePlayer2 = 0;
 		timeElapsed = 0;
 		lives = 3;
 		livesPlayer2 = 3;
@@ -88,7 +88,10 @@ public class FallingGameMultiplayer extends GameMultiplayer{
 					}
 				}
 				if(!entity.loop()&&entity instanceof WordBomb)
-					lives--;
+					if(player1)
+						lives--;
+					else
+						livesPlayer2--;
 			}
 			for(Entity entity : entitiesPlayer2){
 				if(entity instanceof WordBomb){
@@ -97,12 +100,17 @@ public class FallingGameMultiplayer extends GameMultiplayer{
 						continue;
 					}
 				}
-				if(!entity.loop()&&entity instanceof WordBomb)
-					livesPlayer2--;
+				if(!entity.loop()&&entity instanceof WordBomb){
+					if(player1)
+						livesPlayer2--;
+					else
+						lives--;
+				}
 			}
 			if(lives <= 0){
 				victory(false);
-			}else if(livesPlayer2 <= 0)
+			}
+			if(livesPlayer2 <= 0)
 				victory(true);
 	
 			parentPane.getChildren().removeAll(removeQueue);
@@ -167,7 +175,10 @@ public class FallingGameMultiplayer extends GameMultiplayer{
 					Word word = ((WordBomb) entity).getWord();
 					if(word!=null){
 						if(!checkWordHead(word, key)){//if false word was typed out completely
-							score += word.getLetters().size()*WORD_LENGTH_SCORE_MULTIPLIER;
+							if(player1)
+								score += word.getLetters().size()*WORD_LENGTH_SCORE_MULTIPLIER;
+							else
+								scorePlayer2 += word.getLetters().size()*WORD_LENGTH_SCORE_MULTIPLIER;
 							entity.getChildren().remove(word);
 							int previousWordIndex = words.indexOf(word);
 							words.remove(word);
@@ -239,7 +250,10 @@ public class FallingGameMultiplayer extends GameMultiplayer{
 					if(word!=null){
 						if(!checkWordHead(word, key)){//if false word was typed out completely
 							
-							scorePlayer2 += word.getLetters().size()*WORD_LENGTH_SCORE_MULTIPLIER;
+							if(player1)
+								scorePlayer2 += word.getLetters().size()*WORD_LENGTH_SCORE_MULTIPLIER;
+							else
+								score += word.getLetters().size()*WORD_LENGTH_SCORE_MULTIPLIER;
 							entity.getChildren().remove(word);
 							wordsPlayer2.remove(word);
 							
@@ -308,7 +322,7 @@ public class FallingGameMultiplayer extends GameMultiplayer{
 	
 			
 			parentPane.getChildren().removeAll(removeQueue);
-			entities.removeAll(removeQueue);
+			entitiesPlayer2.removeAll(removeQueue);
 			removeQueue.clear();
 			
 			if(victory)
@@ -337,9 +351,9 @@ public class FallingGameMultiplayer extends GameMultiplayer{
 		livesLabelPlayer2 = new Label("Lives: "+livesPlayer2);
 		
 		player2Stats.getChildren().addAll(scoreLabelPlayer2, timeLabelPlayer2, livesLabelPlayer2);
-		
-		hudPanes.add(singlePlayerStats);
+
 		hudPanes.add(player2Stats);
+		hudPanes.add(singlePlayerStats);
 		
 	}
 	@Override

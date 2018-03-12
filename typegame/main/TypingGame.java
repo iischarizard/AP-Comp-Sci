@@ -1,8 +1,6 @@
 package main;
 
 
-import java.io.File;
-
 import game.Game;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -46,7 +44,7 @@ public class TypingGame {
 		primaryStage.setTitle(Constants.TITLE);
         primaryStage.setResizable(false);
 		
-        boom = new Media(new File("src/assets/boom.wav").toURI().toString());
+        boom = new Media(this.getClass().getResource("/assets/boom.wav").toExternalForm());
         
         
 		gameLoop = new Timeline(new KeyFrame(Duration.millis(1000/60), ae -> loop()));
