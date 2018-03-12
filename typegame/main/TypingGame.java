@@ -1,14 +1,18 @@
 package main;
 
 
+import java.io.File;
+
 import game.Game;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import network.Server;
@@ -32,10 +36,19 @@ public class TypingGame {
 	private Server server;
 	public Label test;
 	
+	private static Media boom;
+	
+	public static void BOOM(){
+		(new MediaPlayer(boom)).play();
+	}
+	
 	public TypingGame(Stage primaryStage){
 		primaryStage.setTitle(Constants.TITLE);
         primaryStage.setResizable(false);
 		
+        boom = new Media(new File("src/assets/boom.wav").toURI().toString());
+        
+        
 		gameLoop = new Timeline(new KeyFrame(Duration.millis(1000/60), ae -> loop()));
 		gameLoop.setCycleCount(Animation.INDEFINITE);
 		
@@ -58,8 +71,8 @@ public class TypingGame {
 		//FINISH SETUP AND SHOW STAGE
 		Scene scene = new Scene(rootPane, Constants.WIDTH, Constants.HEIGHT);
 		scene.setOnKeyTyped(key -> {
-				server.keyTyped(key);
 				if(running){
+					server.keyTyped(key);
 					playPane.checkHead(key.getCharacter()+"");	
 				}
 			}
@@ -70,6 +83,13 @@ public class TypingGame {
 		
 		
 	}
+	
+	public void checkHeadPlayer2(String key){
+		if(running){
+			playPane.checkHeadPlayer2(key);
+		}
+	}
+	
 	//MAIN GAME LOOP
 	private void loop(){
 		playPane.loop();
@@ -82,6 +102,9 @@ public class TypingGame {
 	
 	public void switchToConfigPane(){
 		setMainPane(configPane);
+	}
+	public void switchToTitlePane(){
+		setMainPane(titlePane);
 	}
 	public void singlePlayer(){
 		switchToConfigPane();

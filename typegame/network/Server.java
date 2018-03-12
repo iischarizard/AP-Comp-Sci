@@ -24,21 +24,27 @@ public class Server implements Runnable{
 
     private final ArrayList<Socket> sockets;
     private boolean run = false;
-    private StringBuilder lines;
     private TypingGame game;
     // broadcast and receive of UDP; used for TCP connection(s) to peer(s)
     private final Broadcasts broadcasts;
     
-    private boolean inGame = false, broadcastingRoom = false, receivingRooms = false, waitingForOtherPlayerReady = false;
+    private boolean inGame = false, broadcastingRoom = false, receivingRooms = false, waitingForOtherPlayerReady = false, waitingForGameStart = false;
     
     
     private Thread thread;
     public boolean isRunning(){return run;}
     
+
+    private boolean otherPlayerReady = false;
+    
+    private boolean player1;
+    private String roomData = "";
+    private String roomName = "";
+    private String otherPlayerIndexes = "";
+    
     public Server(TypingGame game_){
     	game = game_;
     	sockets = new ArrayList<Socket>();
-        lines = new StringBuilder();
         //Platform.runLater(this);
     	
     	thread = new Thread(this);
@@ -54,7 +60,10 @@ public class Server implements Runnable{
 	            for (Socket s : sockets) {
 	                try {
 	                    PrintWriter pw = new PrintWriter(s.getOutputStream());
-	                    pw.print(e.getCharacter());
+	                    if(player1)
+	                    	pw.print("~&p1&~"+e.getCharacter()+"\n");
+	                    else
+	                    	pw.print("~&p2&~"+e.getCharacter()+"\n");
 	                    pw.flush();
 	                } catch (IOException ex) {
 	                    ex.printStackTrace();
@@ -76,7 +85,7 @@ public class Server implements Runnable{
 	            for (Socket s : sockets) {
 	                try {
 	                    PrintWriter pw = new PrintWriter(s.getOutputStream());
-	                    pw.print(roomName + "~:~" + config.getMaxWordsOnScreen() + "~:~" + config.getMinimumSpeed()+"~:~"+ config.getMaximumSpeed()+"~:~"+ config.isClearProgressOnMistake()+"~:~"+list.toString()+"~-~\n");
+	                    pw.print(roomName + "~:~" + config.getMaxWordsOnScreen() + "~:~" + config.getMinimumSpeed()+"~:~"+ config.getMaximumSpeed()+"~:~"+ config.isClearProgressOnMistake()+"~:~"+list.toString()+"\n");
 	                    pw.flush();
 	                } catch (IOException ex) {
 	                    ex.printStackTrace();
@@ -89,24 +98,67 @@ public class Server implements Runnable{
     	}
     }
     
-    private boolean otherPlayerReady = false;
-    
-    private String roomData = "";
-    private String roomName = "";
     
     public boolean isOtherPlayerReady(){return otherPlayerReady;}
     public void setRoomName(String roomName_){roomName = roomName_;}
+    public void setPlayer1(boolean player1_){player1 = player1_;}
+    public void setWaitingForGameStart(boolean waitingForGameStart_){waitingForGameStart = waitingForGameStart_;}
+    
+    public String getOtherPlayerIndexes(){return otherPlayerIndexes;}
     
     public void recieveRoom(String roomData_){
-    	System.out.println(roomData_);
 
-        synchronized (game) {
+        synchronized (this) {
         	roomData = roomData_;
         }
     }
     
     public String getRoomData(){
     	return roomData;
+    }
+    
+    public void broadcastInGame(){
+    	synchronized (sockets) {
+            List<Socket> toRemove = new LinkedList<>();
+
+            for (Socket s : sockets) {
+                try {
+                    PrintWriter pw = new PrintWriter(s.getOutputStream());
+                    pw.print("~%~INGAME~%~\n");
+                    pw.flush();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                    toRemove.add(s);
+                }
+            }
+
+            sockets.removeAll(toRemove);
+        }
+    }
+    
+    public void broadcastWordIndexes(boolean player1, String listOfIndexes){
+    	synchronized (sockets) {
+            List<Socket> toRemove = new LinkedList<>();
+
+            for (Socket s : sockets) {
+                try {
+                    PrintWriter pw = new PrintWriter(s.getOutputStream());
+                    if(player1){
+                    	pw.print("~&~player1, "+listOfIndexes+"\n");
+                    	//System.out.println("Sent Out: ~&~player1, "+listOfIndexes);
+                    } else{
+                    	pw.print("~&~player2, "+listOfIndexes+"\n");
+                    	//System.out.println("Sent Out: ~&~player2, "+listOfIndexes);
+                    }
+                    pw.flush();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                    toRemove.add(s);
+                }
+            }
+
+            sockets.removeAll(toRemove);
+        }
     }
     
     public void broadcastReady(String roomName){
@@ -116,7 +168,7 @@ public class Server implements Runnable{
             for (Socket s : sockets) {
                 try {
                     PrintWriter pw = new PrintWriter(s.getOutputStream());
-                    pw.print("~()READY()~"+roomName+"~()READY()~");
+                    pw.print("~()READY()~"+roomName+"~()READY()~\n");
                     pw.flush();
                 } catch (IOException ex) {
                     ex.printStackTrace();
@@ -143,16 +195,36 @@ public class Server implements Runnable{
                 while (run && s.isConnected()) {
                     try {
                         if (br.ready()){
-                            //br.mark(1);
-                            //putChar(br.read());
-                            //br.reset();
                             roomData = "";
                         	if(inGame){
-                        		putChar(br.read());
+                            	while(inGame&&(entry = br.readLine())!=null){
+                            		if(player1){
+                            			//System.out.println("Received as player1: "+entry);
+                            			if(entry.contains("~&~player2")){
+                            				System.out.println("I GOT IT POGCHAMP: "+entry);
+                            				synchronized(this){
+                            					otherPlayerIndexes = entry;
+                            				}
+                            			}else if(entry.contains("~&p2&~")){
+                        					
+                        						checkHead(entry.replace("~&p2&~", ""));
+                            			}
+                            		}else{
+                            			//System.out.println("Received as player2: "+entry);
+                            			if(entry.contains("~&~player1")){
+                            				synchronized(this){
+                            					otherPlayerIndexes = entry;
+                            				}
+                            			}else if(entry.contains("~&p1&~")){
+                    						checkHead(entry.replace("~&p1&~", ""));
+                            			}
+                            		}
+                            	}
                         	}else if(waitingForOtherPlayerReady){
 	                            while(waitingForOtherPlayerReady&&(entry = br.readLine())!=null){
 	                            	if(entry.equals("~()READY()~"+roomName+"~()READY()~")){
 	                            		otherPlayerReady = true;
+	                            		waitingForOtherPlayerReady = false;
 	                            		break;
 	                            	}
 	                            }
@@ -164,6 +236,13 @@ public class Server implements Runnable{
 	                            		roomData+=entry;
 	                                recieveRoom(roomData);
 	                            }
+                            }else if(waitingForGameStart){
+                            	while(waitingForGameStart&&(entry = br.readLine())!=null){
+                            		if(entry.equals("~%~INGAME~%~")){
+                            			inGame = true;
+                            			break;
+                            		}
+                            	}
                             }
                         }
                     } catch (IOException ex) {
@@ -179,6 +258,7 @@ public class Server implements Runnable{
 				}
             }
         }).start();
+       
     }
     
 	public void startThread(){
@@ -186,26 +266,16 @@ public class Server implements Runnable{
 		broadcasts.start();
 	}
 
-    // method called by per-connection thread defined in socketStream
-    public void putChar(int ch) {
-        // check for backspace and space for delete,
-        // otherwise put character into buffer,
-        // and show updated buffer
-        if (ch == 8 && lines.length() > 0)
-            lines.delete(lines.length() - 1, lines.length());
-        else
-            lines.append((char)ch);
-        synchronized (game) {
+	public void checkHead(String key){
+		synchronized(game){
 	        Platform.runLater(new Runnable() {
 	            @Override public void run() {
-	            	//game.test.setText(String.valueOf((char)ch));
-	            	game.test.setText(lines.toString() + '.');
-	                // etc
+	            	game.checkHeadPlayer2(key);
 	            }
 	        });
-            //textArea.setText(lines.toString() + '.');
-        }
-    }
+		}
+	}
+	
     
     public void quit() {
         run = false;

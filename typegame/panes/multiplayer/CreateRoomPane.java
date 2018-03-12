@@ -27,6 +27,9 @@ public class CreateRoomPane extends ConfigPane{
 		TextField roomName = new TextField(username+"'s room");
 		roomName.setLayoutX(350);
 		roomName.setLayoutY(200);
+
+		game.getServer().setReceivingRooms(false);		
+		game.getServer().setPlayer1(true);
 		
 		start.setText("Create Room");
 		start.setOnAction(e -> {
@@ -42,6 +45,7 @@ public class CreateRoomPane extends ConfigPane{
 				getChildren().clear();
 				game.getServer().setBroadcastingRoom(true);
 				game.getServer().setRoomName(roomName.getText());
+				game.getServer().setWaitingForOtherPlayerReady(true);
 				Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1000/3), new EventHandler<ActionEvent>(){
 
 					@Override
@@ -61,7 +65,9 @@ public class CreateRoomPane extends ConfigPane{
 					if(otherPlayerReady){
 						timeline.stop();
 						game.getServer().setBroadcastingRoom(false);
+						game.getServer().setWaitingForOtherPlayerReady(false);
 						game.getServer().setInGame(true);
+						game.getServer().broadcastInGame();
 						game.startGameLoop(new FallingGameMultiplayer(generateConfig(), game.getPlayPane(), game.getServer()));
 					}
 					

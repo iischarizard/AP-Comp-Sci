@@ -51,18 +51,31 @@ public abstract class Entity extends Pane{
         getChildren().add(iv);
 	}
 	
+	//rectangle entity
+	public Entity(float x_, float y_, float width_, float height_, String color, int type){
+		setLayoutX(x_);
+		setLayoutY(y_);
+		setPrefWidth(width_);
+		setPrefHeight(height_);
+		setStyle("-fx-background-color: "+color);
+	}
+	
 	public boolean nextImage(){
-		imageIndex++;
-		if(imageIndex==images.size())
-			imageIndex = 0;
-		iv.setImage(images.get(imageIndex));
+		if(images.size()!=0){
+			imageIndex++;
+			if(imageIndex==images.size())
+				imageIndex = 0;
+			iv.setImage(images.get(imageIndex));
+		}
 		return imageIndex == images.size()-1;
 	}
 
 	public void setImage(int index){
-		iv.setImage(images.get(index));
+		if(images.size()!=0)
+			iv.setImage(images.get(index));
 	}
 	
 	public abstract boolean loop();
+	public int getImageIndex(){return imageIndex;}
 	
 }

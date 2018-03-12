@@ -25,7 +25,7 @@ public class Config {
 		}else{
 			clearProgressOnMistake = false;
 		}
-		list = new WordList(roomData[4].split("~^~"));
+		list = new WordList(roomData[5].split("<;:;>"));
 		
 	}
 	

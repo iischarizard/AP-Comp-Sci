@@ -22,12 +22,22 @@ public class Word extends Pane{
 		maxSpeed = maxSpeed_;
 		setLayoutX(x);
 		setLayoutY(y);
-		init();
+		init(-1);
+		getChildren().add(word);
+		word.setStyle("-fx-background-color: white; -fx-border-color: black");
+	}
+	public Word(String value_, float x, float y, float speed, float minSpeed_, float maxSpeed_){
+		value = value_;
+		minSpeed = minSpeed_;
+		maxSpeed = maxSpeed_;
+		setLayoutX(x);
+		setLayoutY(y);
+		init(speed);
 		getChildren().add(word);
 		word.setStyle("-fx-background-color: white; -fx-border-color: black");
 	}
 	
-	private void init(){
+	private void init(float speed_){
 		word = new TextFlow();
 		letters = new ArrayList<Text>();
 		headIndex = 0;
@@ -35,8 +45,10 @@ public class Word extends Pane{
 			letters.add(makeText(value.charAt(i)));
 		}
 		word.getChildren().addAll(letters);
-		speed = (float)(minSpeed + Math.random() * (maxSpeed - minSpeed));
-		
+		if(speed_==-1)
+			speed = (float)(minSpeed + Math.random() * (maxSpeed - minSpeed));
+		else
+			speed = speed_;
 	}
 	
 	private Text makeText(char value){

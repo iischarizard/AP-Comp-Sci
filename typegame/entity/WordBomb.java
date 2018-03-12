@@ -1,5 +1,6 @@
 package entity;
 
+import main.TypingGame;
 import utils.Constants;
 import word.Word;
 
@@ -24,6 +25,8 @@ public class WordBomb extends Entity{
 		getChildren().add(word);
 		
 	}
+	
+	
 	private long previous = System.currentTimeMillis();
 	@Override
 	public boolean loop() {
@@ -32,9 +35,10 @@ public class WordBomb extends Entity{
 			long now = System.currentTimeMillis();
 			if(now-previous>=1000/5){
 				previous = now;
+				if(getImageIndex() == 10)
+					TypingGame.BOOM();
 				if(nextImage()){
 					setLayoutY(-50);
-					word.setSpeed((float)(word.getMinSpeed() + Math.random() * (word.getMaxSpeed() - word.getMinSpeed())));
 					nextImage();
 					return false;
 				}

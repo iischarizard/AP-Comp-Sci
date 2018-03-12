@@ -47,7 +47,7 @@ public class WordList{
 	public String toString(){
 		String string = "";
 		for(String word : words){
-			string += word+"~^~";
+			string += word+"<;:;>";
 		}
 		return string;
 	}

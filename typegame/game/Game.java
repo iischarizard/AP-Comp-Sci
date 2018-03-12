@@ -34,6 +34,16 @@ public abstract class Game {
 		setUpHUDPanes();
 		setUpGameOverPanes();
 	}
+	public Game(Config config_, PlayPane parentPane_, boolean setUpLater){
+		parentPane = parentPane_;
+		setConfig(config_);
+		list = config.getList();
+		words = new ArrayList<Word>();
+		wordsAppearedIndexList = new ArrayList<Integer>();
+		entities = new ArrayList<Entity>();
+		hudPanes = new ArrayList<Pane>();
+		gameOverPanes = new ArrayList<Pane>();
+	}
 	
 	protected abstract void setUpWords();
 	protected abstract void setUpHUDPanes();

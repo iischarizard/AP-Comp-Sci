@@ -21,7 +21,7 @@ public class FallingGameSinglePlayer extends Game {
 	private Label scoreLabel, timeLabel, livesLabel, victoryDefeatLabel, timeScoreLabel, livesScoreLabel, finalScoreLabel;
 	private long previous;
 	private final int WORD_LENGTH_SCORE_MULTIPLIER = 5;
-	private boolean alive = true;
+	private boolean alive;
 	public FallingGameSinglePlayer(Config config, PlayPane parentPane){
 		super(config, parentPane);
 		score = 0; 
@@ -52,7 +52,7 @@ public class FallingGameSinglePlayer extends Game {
 				if(!entity.loop()&&entity instanceof WordBomb)
 					lives--;
 			}
-			if(lives == 0){
+			if(lives <= 0){
 				dead();
 			}
 	
@@ -78,6 +78,7 @@ public class FallingGameSinglePlayer extends Game {
 			}
 			
 		}
+		alive = true;
 	}
 	private boolean victory = false;
 	@Override
@@ -106,12 +107,12 @@ public class FallingGameSinglePlayer extends Game {
 								((WordBomb) entity).setWord(null);
 							}
 							if(words.size() != 0){
-								checkHead(key);
+								//checkHead(key);
 							}else{
 								victory = true;
 								removeQueue.add(entity);
 							}
-							break;
+							//break;
 						}
 					}else{
 						removeQueue.add(entity);

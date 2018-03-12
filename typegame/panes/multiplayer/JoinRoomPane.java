@@ -26,7 +26,9 @@ public class JoinRoomPane extends Pane{
 		rooms.setStyle("-fx-border-color: black");
 		rooms.setPrefHeight(Constants.HEIGHT);
 		rooms.setPrefWidth(300);
-		game.getServer().setReceivingRooms(true);
+		game.getServer().setReceivingRooms(true);		
+		game.getServer().setPlayer1(false);
+		game.getServer().setBroadcastingRoom(false);
 
 		Timeline timeline = new Timeline();
 		timeline.getKeyFrames().add(new KeyFrame(Duration.millis(1000/3), new EventHandler<ActionEvent>(){
@@ -61,12 +63,14 @@ public class JoinRoomPane extends Pane{
 				game.getServer().broadcastReady(roomData[0]);
 				if(game.getServer().isInGame()){
 					timeline.stop();
-					game.getServer().setInGame(true);
 					game.startGameLoop(new FallingGameMultiplayer(roomData, game.getPlayPane(), game.getServer()));
 				}
 			}
 		}));
+		timeline.setCycleCount(Animation.INDEFINITE);
 		ready.setOnAction(ae -> {
+			getChildren().clear();
+			game.getServer().setWaitingForGameStart(true);
 			timeline.play();
 		});
 		getChildren().addAll(ready);
